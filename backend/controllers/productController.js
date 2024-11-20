@@ -7,7 +7,7 @@ const createProduct = async(req, res) =>{
     const {name, price, description} = req.body
 
     try{
-        const prodcut = await Product.create({name, price, description})
+        const product = await Product.create({name, price, description})
         res.status(200).json(product)
     }catch(error){
         res.status(500).json({error: err})
@@ -19,6 +19,10 @@ const getProducts = async(req, res) =>{
     const products = await Product.find({})
     res.status(200).json(products)
 }
+
+//Update Product
+
+//Delete Product
 
 module.exports = {
     createProduct,
