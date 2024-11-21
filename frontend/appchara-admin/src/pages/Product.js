@@ -1,14 +1,9 @@
-import SideNav from "../component/SideNav";
+import Navbar from "../component/Navbar";
 
 const Product = () => {
     return ( 
-        <div className="row g-0">
-            <div className="col col-md-3 vh-100">
-                <SideNav/>
-            </div>
-            <div className="col col-md-auto">
-                <h1>Content of Product</h1>
-            </div>
+        <div className="product">
+            
         </div>
      );
 }
