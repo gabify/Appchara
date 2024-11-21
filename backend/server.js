@@ -9,7 +9,7 @@ const app = express()
 
 //cors enabled endpoints
 let corsOptions = {
-    origin: []
+    origin: 'http://localhost:3000'
 }
 
 //middleware
@@ -24,15 +24,15 @@ mongoose.connect(process.env.DB_URI)
     .then(() =>{
         app.listen(process.env.PORT, ()=>{
             console.log('Connected to database...')
-            console.log(('Listening to port ', process.env.PORT))
-        }).catch(err =>{
-            console.log(err)
+            console.log('Listening to port ', process.env.PORT)
         })
+    }).catch(error =>{
+        console.log(error)
     })
 
 
 let requestMapper = '/api/v1'
-app.use('/product', productRoutes)
+app.use(requestMapper+'/product', productRoutes)
 
 
 //if no request match
