@@ -1,4 +1,3 @@
-import Navbar from "../component/Navbar";
 
 const Dashboard = () => {
     return ( 
