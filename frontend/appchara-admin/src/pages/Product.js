@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react'
 
-import AddProduct from '../component/AddProduct'
+import ProductForm from '../component/ProductForm'
 
 const Product = () => {
     const [products, setProduct] = useState(null)
@@ -13,7 +13,6 @@ const Product = () => {
             if(response.ok){
                 setProduct(result)
             }
-
         }
 
         fetchProduct()
@@ -23,10 +22,10 @@ const Product = () => {
     return ( 
         <div className="product">
             <div className="px-5 py-2">
-                <AddProduct/>
+                <ProductForm/>
                 <div className="row">
                     {products && products.map((product) =>(
-                        <div className="col col-12" key={product._id}>
+                        <div className="col col-12 mb-3" key={product._id}>
                             <div className="card">
                                 <div className="card-body">
                                     <div className="d-flex justify-content-between align-items-center">
