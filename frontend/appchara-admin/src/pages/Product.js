@@ -1,6 +1,8 @@
 import {useEffect, useState} from 'react'
 
 import ProductForm from '../component/ProductForm'
+import ProductCard from '../component/ProductCard'
+
 
 const Product = () => {
     const [products, setProduct] = useState(null)
@@ -25,19 +27,7 @@ const Product = () => {
                 <ProductForm/>
                 <div className="row">
                     {products && products.map((product) =>(
-                        <div className="col col-12 mb-3" key={product._id}>
-                            <div className="card">
-                                <div className="card-body">
-                                    <div className="d-flex justify-content-between align-items-center">
-                                        <div>
-                                            <h5 className="card-title">{product.name}</h5>
-                                            <h6 className="card-subtitle text-secondary">Stock: {product.stock}</h6>
-                                        </div>
-                                        <i className="bi bi-three-dots-vertical fs-5"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <ProductCard product={product} key={product._id}/>
                     ))}
                     
                 </div>
