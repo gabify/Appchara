@@ -5,6 +5,7 @@ const cors = require('cors')
 const mongoose = require('mongoose')
 
 const productRoutes = require('./routes/productRoutes')
+const userRoutes = require('./routes/userRoutes')
 const app = express()
 
 //cors enabled endpoints
@@ -33,6 +34,7 @@ mongoose.connect(process.env.DB_URI)
 
 let requestMapper = '/api/v1'
 app.use(requestMapper+'/product', productRoutes)
+app.use(requestMapper+'/user', userRoutes)
 
 
 //if no request match
