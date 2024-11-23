@@ -1,7 +1,9 @@
 import { useState } from "react";
 import {Modal, Button, Form} from 'react-bootstrap'
+import {useProductContext} from '../hooks/useProductContext'
 
 const UpdateProduct = ({product, showEdit, handleCloseEdit}) => {
+    const {dispatch} = useProductContext()
     const [name, setName] = useState(product.name);
     const [price, setPrice] = useState(product.price);
     const [stock, setStock] = useState(product.stock);
@@ -28,12 +30,9 @@ const UpdateProduct = ({product, showEdit, handleCloseEdit}) => {
             console.log(error)
         }else{
             setError(null)
-            setName('')
-            setPrice('')
-            setStock('')
-            setDescription('')
             handleCloseEdit()
             console.log("Product Updated")
+            dispatch({type: 'UPDATE_PRODUCT', payload: result})
         }
     }
     

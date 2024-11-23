@@ -25,8 +25,8 @@ const ProductCard = ({product}) => {
                             <Card.Subtitle>Stock: {product.stock}</Card.Subtitle>
                         </div>
                         <div className="d-flex justify-content-evenly">
-                            <span className='me-2'onClick={handleShowEdit}>EDIT</span>
-                            <span onClick={handleShowDelete}>DELETE</span>
+                            <span className='me-2' style={{cursor: 'pointer'}} onClick={handleShowEdit}>EDIT</span>
+                            <span className='text-danger' style={{cursor: 'pointer'}} onClick={handleShowDelete}>DELETE</span>
                         </div>
                     </div>
                 </Card.Body>

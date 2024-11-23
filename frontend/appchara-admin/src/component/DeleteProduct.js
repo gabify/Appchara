@@ -1,8 +1,10 @@
 import { useState } from 'react'
 import {Modal, Button} from 'react-bootstrap'
+import { useProductContext } from '../hooks/useProductContext'
 
 const DeleteProduct = ({productId, showDelete, handleCloseDelete}) => {
     const id = productId
+    const {dispatch} = useProductContext()
     const [error, setError] = useState(null)
 
     const handleDelete = async() =>{
@@ -21,6 +23,7 @@ const DeleteProduct = ({productId, showDelete, handleCloseDelete}) => {
         }else{
             console.log("Product deleted")
             handleCloseDelete()
+            dispatch({type: 'DELETE_PRODUCT', payload: result})
         }
     }
     

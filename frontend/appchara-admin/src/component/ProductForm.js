@@ -1,7 +1,9 @@
 import { useState } from "react";
 import {Modal, Button, Form} from 'react-bootstrap'
+import { useProductContext } from "../hooks/useProductContext";
 
 const ProductForm = () => {
+    const {dispatch} = useProductContext()
 
     const [name, setName] = useState('');
     const [price, setPrice] = useState('');
@@ -38,6 +40,7 @@ const ProductForm = () => {
             setDescription('')
             handleClose()
             console.log("New product added")
+            dispatch({type: 'CREATE_PRODUCT', payload: result})
         }
     }
     

@@ -30,7 +30,7 @@ const updateProduct = async(req, res) =>{
 
     const updated_product = await Product.findOneAndUpdate({_id: id}, {
         ...req.body
-    })
+    }, {new: true})
 
     if(!updated_product){
         return res.status(404).json({error: "No such product exists"})
