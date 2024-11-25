@@ -5,6 +5,7 @@ const {
     createProduct,
     getProducts,
     updateProduct,
+    addStock,
     deleteProduct,
 } = require('../controllers/productController')
 
@@ -17,6 +18,7 @@ router.get('/', getProducts)
 
 //UPDATE REQUEST
 router.patch('/:id', updateProduct)
+router.patch('/add/:id', addStock)
 
 //DELETE REQUEST
 router.delete('/:id', deleteProduct)

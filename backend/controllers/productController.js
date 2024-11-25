@@ -40,6 +40,27 @@ const updateProduct = async(req, res) =>{
 
 }
 
+//ADD STOCK TO PRODUCT
+const addStock = async(req, res) =>{
+    const {id} = req.params
+    const {additional_stock} = req.body
+
+    if(!mongoose.Types.ObjectId.isValid(id)){
+        return res.status(404).json({error: "No such product exists"})
+    }
+
+    const updated_product = await Product.updateOne(
+        {_id: id}, 
+        {$inc: {stock: additional_stock}}
+    )
+
+    if(!updated_product){
+        return res.status(404).json({error: "No such product exists"})
+    }
+
+    res.status(200).json(updated_product)
+}
+
 //Delete Product
 const deleteProduct = async(req, res) =>{
     const {id} = req.params
@@ -61,5 +82,6 @@ module.exports = {
     createProduct,
     getProducts,
     updateProduct,
+    addStock,
     deleteProduct,
 }
