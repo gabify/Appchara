@@ -1,0 +1,23 @@
+import {Card} from 'react-bootstrap'
+
+const OrderCard = ({order}) => {
+    return ( 
+        <div className="col col-12 mb-3">
+            <Card>
+                <Card.Body>
+                    <div className="d-flex justify-content-between align-items-center">
+                        <div>
+                            <Card.Title>{order.user.name}</Card.Title>
+                            <Card.Subtitle>Stock: {order._id}</Card.Subtitle>
+                        </div>
+                        <div className="d-flex justify-content-evenly">
+                            <span className='me-2' style={{cursor: 'pointer'}} >View Order</span>
+                        </div>
+                    </div>
+                </Card.Body>
+            </Card>
+        </div>
+     );
+}
+ 
+export default OrderCard;
