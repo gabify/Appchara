@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react'
-import { Button } from 'react-bootstrap'
+import { Button, Toast, ToastContainer} from 'react-bootstrap'
 import {useProductContext} from '../hooks/useProductContext'
 import POSProductCard from '../component/POSProductCard'
 import CartItem from '../component/CartItem'
@@ -10,6 +10,15 @@ const POS = () => {
     const [productId, setProductId] = useState(0)
     const [totalPrice, setTotalPrice] = useState(0)
     const [error, setError] = useState(null)
+    const [show, setShow] = useState(false)
+
+    const handleShow = () =>{
+        setShow(true)
+    }
+
+    const handleClose = () =>{
+        setShow(false)
+    }
 
     const addToCart = (product) =>{
         let id = productId
@@ -94,7 +103,7 @@ const POS = () => {
         }else{
             setCart([])
             setTotalPrice(0)
-
+            handleShow()
             //Add alert that the transaction is complete
         }
     }
@@ -146,6 +155,16 @@ const POS = () => {
                         </div>
                     </div>
                 </div>
+
+                <ToastContainer className='p-3' position='bottom-end' style={{zIndex: 1}}>
+                    <Toast show={show} onClose={handleClose} delay={3000} autohide>
+                        <Toast.Header>
+                            <strong className="me-auto">Success</strong>
+                            <small>Just now</small>
+                        </Toast.Header>
+                        <Toast.Body>Transaction complete!</Toast.Body>
+                    </Toast>
+                </ToastContainer>
             </div>
         </div>
      );
