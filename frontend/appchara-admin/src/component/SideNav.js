@@ -17,13 +17,13 @@ const SideNav = () => {
                     </Link>
                 </li>
                 <li className="nav-item">
-                    <Link to="/sale">
-                        <p className="nav-link text-dark fs-5">Sales</p>
+                    <Link to="/pos">
+                        <p className="nav-link text-dark fs-5">Point of Sale</p>
                     </Link>
                 </li>
                 <li className="nav-item">
-                    <Link to="/purchase">
-                        <p className="nav-link text-dark fs-5">Purchase</p>
+                    <Link to="/orders">
+                        <p className="nav-link text-dark fs-5">Orders</p>
                     </Link>
                 </li>
                 <li className="nav-item">

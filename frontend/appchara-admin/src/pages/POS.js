@@ -4,7 +4,7 @@ import {useProductContext} from '../hooks/useProductContext'
 import POSProductCard from '../component/POSProductCard'
 import CartItem from '../component/CartItem'
 
-const Sale = () => {
+const POS = () => {
     const {products, dispatch} = useProductContext()
     const [cart, setCart] = useState([])
     const [productId, setProductId] = useState(0)
@@ -91,6 +91,11 @@ const Sale = () => {
         if(!response.ok){
             setError(result.error)
             console.log(error)
+        }else{
+            setCart([])
+            setTotalPrice(0)
+
+            //Add alert that the transaction is complete
         }
     }
 
@@ -146,4 +151,4 @@ const Sale = () => {
      );
 }
  
-export default Sale;
+export default POS;

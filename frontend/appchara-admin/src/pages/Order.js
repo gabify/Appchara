@@ -1,6 +1,6 @@
 import SideNav from "../component/SideNav";
 
-const Purchase = () => {
+const Order = () => {
     return ( 
         <div className="row g-0">
             <div className="col col-md-3 vh-100">
@@ -13,4 +13,4 @@ const Purchase = () => {
      );
 }
  
-export default Purchase;
+export default Order;
