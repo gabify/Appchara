@@ -51,13 +51,13 @@ const createOrder = async(req, res) =>{
 
 //Complete Order
 const completeOrder = async(req, res) =>{
-    const orderId = req.params
+    const {orderId} = req.params
 
     //check if valid order
     if(!mongoose.Types.ObjectId.isValid(orderId)){
         return res.status(404).json({error: `Invalid order ID: ${orderId}`})
     }
-    const order = await User.findById({_id:orderId})
+    const order = await Order.findById({_id:orderId})
 
     if(!order){
         res.status(400).json({error: `No order found with ID: ${orderId}`})
@@ -74,7 +74,7 @@ const completeOrder = async(req, res) =>{
     }
 
     //check if valid total price
-    if(total <= 0){
+    if(order.total <= 0){
         return res.status(400).json({error: "Total sales should not be 0"})
     }
 
@@ -109,7 +109,7 @@ const completeOrder = async(req, res) =>{
     }
 
     //save the sale data 
-    const sale = await Sale.create({items:updated_orders, total_sale: total})
+    const sale = await Sale.create({items:updated_orders, total_sale: order.total})
 
     if(!sale){
         return res.status(500).json({error: 'An error occured. Please try again'})
@@ -128,13 +128,13 @@ const completeOrder = async(req, res) =>{
 
 //Cancel Order
 const cancelOrder = async(req, res) =>{
-    const orderId = req.params
+    const {orderId} = req.params
 
     //check if valid order
     if(!mongoose.Types.ObjectId.isValid(orderId)){
         return res.status(404).json({error: `Invalid order ID: ${orderId}`})
     }
-    const order = await User.findById({_id:orderId})
+    const order = await Order.findById({_id:orderId})
 
     if(!order){
         res.status(400).json({error: `No order found with ID: ${orderId}`})
@@ -158,7 +158,7 @@ const getOrders = async(req, res) =>{
 
 //GEt orders by user
 const getOrderByUser = async(req, res) =>{
-    const userId = req.param
+    const {userId} = req.params
 
     //check if valid user
     if(!mongoose.Types.ObjectId.isValid(userId)){
@@ -173,7 +173,7 @@ const getOrderByUser = async(req, res) =>{
     const orders = await Order.find({user_id: user._id})
 
     if(!orders){
-        res.status(400).json({error: `No order found with ID: ${orderId}`})
+        res.status(400).json({error: `No order found from user with ID: ${userId}`})
     }
 
     res.status(200).json(orders)
