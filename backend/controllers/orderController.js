@@ -22,13 +22,13 @@ const createOrder = async(req, res) =>{
     }
 
     for(const item of orders){
-        if(!mongoose.Types.ObjectId.isValid(item.product_id)){
-            return res.status(400).json({error: `Invalid product ID: ${item.product_id}`})
+        if(!mongoose.Types.ObjectId.isValid(item.product)){
+            return res.status(400).json({error: `Invalid product ID: ${item.product}`})
         }
         
-        const product = await Product.findById(item.product_id)
+        const product = await Product.findById(item.product)
         if(!product){
-            return res.status(404).json({error: `No product found with ID: ${item.product_id}`})
+            return res.status(404).json({error: `No product found with ID: ${item.product}`})
         }
 
         if(item.quantity <= 0){
@@ -40,7 +40,7 @@ const createOrder = async(req, res) =>{
         }
     }
 
-    const order = await Order.create({user_id: valid_user._id, orders, total, status: "pending"})
+    const order = await Order.create({user: valid_user._id, orders, total, status: "pending"})
     if(!order){
         return res.status(500).json({error: 'An error occured. Please try again'})
     }
@@ -152,7 +152,7 @@ const cancelOrder = async(req, res) =>{
 
 //Get all orders
 const getOrders = async(req, res) =>{
-    const orders = await Order.find({})
+    const orders = await Order.find({}).populate('user').populate('orders.product')
     res.status(200).json(orders)
 }
 

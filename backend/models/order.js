@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const orderSchema = Schema({
-    user_id:{
+    user:{
         type: Schema.Types.ObjectId,
         required: true,
         ref: 'User'
@@ -11,7 +11,7 @@ const orderSchema = Schema({
     orders: {
         type: [
             {
-                product_id: {
+                product: {
                     type: Schema.Types.ObjectId,
                     required: true,
                     ref: 'Product'
