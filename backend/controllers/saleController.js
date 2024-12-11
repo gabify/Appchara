@@ -65,16 +65,16 @@ const createSale = async(req, res) =>{
 
     for(const item of sales){
         if(!mongoose.Types.ObjectId.isValid(item.product_id)){
-            return res.status(400).json(`Invalid product ID: ${item.product_id}`)
+            return res.status(400).json({error: `Invalid product ID: ${item.product_id}`})
         }
         
         const product = await Product.findById(item.product_id)
         if(!product){
-            return res.status(404).json(`No product found with ID: ${item.product_id}`)
+            return res.status(404).json({error: `No product found with ID: ${item.product_id}`})
         }
 
         if(product.stock < item.quantity){
-            return res.status(500).json(`Insufficient stock for product: ${product.name}`)
+            return res.status(500).json({error: `Insufficient stock for product: ${product.name}`})
         }
 
         product.stock -= item.quantity
@@ -90,7 +90,7 @@ const createSale = async(req, res) =>{
     const sale = await Sale.create({items:updated_sales, total_sale})
 
     if(!sale){
-        return res.status(500).json('An error occured. Please try again')
+        return res.status(500).json({error: 'An error occured. Please try again'})
     }
 
     return res.status(200).json(sale)
