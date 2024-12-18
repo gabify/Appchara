@@ -48,6 +48,9 @@ const POS = () => {
         cart.map(cartItem =>{
             if(cartItem.id === id){
                 total -= cartItem.price
+
+                cartItem.product.stock += cartItem.quantity
+                dispatch({type: 'UPDATE_PRODUCT', payload: cartItem.product})
             }
 
             return cartItem
@@ -60,7 +63,7 @@ const POS = () => {
     const addQuantity = (id) =>{
         const newCart = cart.map(cartItem =>{
             if(cartItem.id === id){
-                if(cartItem.product.stock <= 0 || cartItem.product.stock === cartItem.quantity){
+                if(cartItem.product.stock <= 0){
                     console.log('Not enough stocks')
                     //add error message
                 }else{
