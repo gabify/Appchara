@@ -1,30 +1,10 @@
-import { useState } from 'react'
 import {Modal, Button, Table} from 'react-bootstrap'
 
-const OrderDetails = ({order, showDetails, handleCloseDetails}) => {
-    const id = order._id
-    const [error, setError] = useState(null)
+//date fns
+import formatDistanceToNow from 'date-fns/formatDistanceToNow'
 
-    const handleComplete = async() =>{
-        const response = await fetch(`http://127.0.0.1:5000/api/v1/order/${id}`, {
-            method: "PATCH",
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
-
-        const result = await response.json()
-
-        if(!response.ok){
-            setError(result.error)
-            console.log(error)
-        }else{
-            setError(null)
-            handleCloseDetails()
-            console.log('Order Completed')
-        }
-
-    }
+const OrderDetails = ({order, showDetails, handleCloseDetails, handleComplete, handleCancel, error, setError}) => {
+    const currentOrder = order
 
     return ( 
         <div className='order-details'>
@@ -47,7 +27,7 @@ const OrderDetails = ({order, showDetails, handleCloseDetails}) => {
                     </div>
                     <div className="d-flex">
                         <p className='me-2'>Order Date: </p>
-                        <p className="fw-bold">{order.createdAt}</p>
+                        <p className="fw-bold">{formatDistanceToNow(new Date(order.createdAt), {addSuffix: true})}</p>
                     </div>
                     <hr />
                     <Table borderless hover size='sm' className='px-5'>
@@ -59,8 +39,8 @@ const OrderDetails = ({order, showDetails, handleCloseDetails}) => {
                             </tr>
                         </thead>
                         <tbody>
-                            {order.orders.map((item) =>(
-                                <tr id={item._id} className='text-center'>
+                            {currentOrder.orders.map((item) =>(
+                                <tr key={item._id} className='text-center'>
                                     <td>{item.product.name}</td>
                                     <td>x{item.quantity}</td>
                                     <td>₱{item.sale_per_item}.00</td>
@@ -73,15 +53,25 @@ const OrderDetails = ({order, showDetails, handleCloseDetails}) => {
                         </tbody>
                     </Table>
                 </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="danger" onClick={handleCloseDetails}>
-                        Cancel
-                    </Button>
-
-                    <Button variant="success" onClick={handleComplete}>
-                        Complete
-                    </Button>
-                </Modal.Footer>
+                {order.status === 'complete' || order.status === 'cancelled' ? (
+                    <Modal.Footer>
+                        <Button variant="danger" disabled>
+                            Cancel
+                        </Button>
+                        <Button variant="success" disabled>
+                            Complete
+                        </Button>
+                    </Modal.Footer>
+                ) : (
+                    <Modal.Footer>
+                        <Button variant="danger" onClick={handleCancel}>
+                            Cancel
+                        </Button>
+                        <Button variant="success" onClick={handleComplete}>
+                            Complete
+                        </Button>
+                    </Modal.Footer>
+                )}
             </Modal>
         </div>
      );
