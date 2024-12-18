@@ -32,6 +32,11 @@ const POS = () => {
             const newCart = [...cart, cartItem]
             setCart(newCart)
 
+            product.stock -= 1
+            dispatch({type: 'UPDATE_PRODUCT', payload: product})
+
+            //Need to deduct stock on products when product is added to cart
+
             const newTotal = newCart.reduce((sum, item) => sum + item.price, 0);
             setTotalPrice(newTotal);
         }
@@ -55,12 +60,15 @@ const POS = () => {
     const addQuantity = (id) =>{
         const newCart = cart.map(cartItem =>{
             if(cartItem.id === id){
-                if(cartItem.product.stock <= 1 || cartItem.product.stock === cartItem.quantity){
+                if(cartItem.product.stock <= 0 || cartItem.product.stock === cartItem.quantity){
                     console.log('Not enough stocks')
                     //add error message
                 }else{
                     cartItem.quantity += 1
                     cartItem.price = cartItem.product.price * cartItem.quantity
+                    
+                    cartItem.product.stock -= 1
+                    dispatch({type: 'UPDATE_PRODUCT', payload: cartItem.product})
                 }
             }
 
@@ -79,6 +87,8 @@ const POS = () => {
             if(cartItem.id === id && cartItem.quantity > 1){
                 cartItem.quantity -= 1
                 cartItem.price = cartItem.product.price * cartItem.quantity
+                cartItem.product.stock += 1
+                dispatch({type: 'UPDATE_PRODUCT', payload: cartItem.product})
             }
 
             return cartItem
