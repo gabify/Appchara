@@ -1,3 +1,30 @@
 .sidenav{
     background-image: linear-gradient(to bottom right, #10ac84 , #fff200);
 }
+
+.main{
+    background-color: #dfe4ea;
+}
+
+.side-nav-item{
+    padding: 20px 0 5px 7px;
+    border-radius: 22px;
+}
+
+.side-nav-item:hover{
+    background-color: #f5f6fa;
+    color: #10ac84
+}
+
+.side-nav-link{
+    color: whitesmoke;
+}
+
+.side-nav-link:hover{
+    color: #10ac84
+}
+
+.active-side-nav-item{
+    background-color: #f5f6fa;
+    color: #10ac84
+}

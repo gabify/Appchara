@@ -8,7 +8,7 @@ import Order from './pages/Order';
 import Report from './pages/Report';
 import POS from './pages/POS';
 import SideNav from './component/SideNav';
-import Navbar from './component/Navbar';
+import Notification from './component/Notification';
 import { ProductContextProvider } from './context/ProductContext';
 
 function App() {
@@ -17,11 +17,11 @@ function App() {
       <BrowserRouter>
         <ProductContextProvider>
           <div className="row g-0">
-            <div className="col col-md-3 vh-100">
+            <div className="col col-md-3">
               <SideNav/>
             </div>
-            <div className="pages col col-md-9">
-              <Navbar/>
+            <div className="pages col col-md-9 main">
+              <Notification/>
               <Routes>
                 <Route path='/' element={<Dashboard/>}/>
                 <Route path='/product' element={<Product/>}/>

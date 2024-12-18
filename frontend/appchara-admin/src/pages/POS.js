@@ -1,14 +1,18 @@
 import {useEffect, useState} from 'react'
-import { Button, Toast, ToastContainer} from 'react-bootstrap'
+import {Toast, ToastContainer} from 'react-bootstrap'
 import {useProductContext} from '../hooks/useProductContext'
 import POSProductCard from '../component/POSProductCard'
 import CartItem from '../component/CartItem'
+import CartFooter from '../component/CartFooter'
 
 const POS = () => {
     const {products, dispatch} = useProductContext()
     const [cart, setCart] = useState([])
     const [productId, setProductId] = useState(0)
+    const [subtotal, setSubtotal] = useState(0)
     const [totalPrice, setTotalPrice] = useState(0)
+    const [discount, setDiscount] = useState(0)
+    const [discountedPrice, setDiscountedPrice] = useState(0)
     const [error, setError] = useState(null)
     const [show, setShow] = useState(false)
 
@@ -35,16 +39,18 @@ const POS = () => {
             product.stock -= 1
             dispatch({type: 'UPDATE_PRODUCT', payload: product})
 
-            //Need to deduct stock on products when product is added to cart
-
             const newTotal = newCart.reduce((sum, item) => sum + item.price, 0);
-            setTotalPrice(newTotal);
+            const newDiscountedPrice = newTotal * discount
+            const newTotalPrice = newTotal - discountedPrice 
+            setSubtotal(newTotal)
+            setDiscountedPrice(newDiscountedPrice)
+            setTotalPrice(newTotalPrice);
         }
     }
 
     const removeToCart = (id) =>{
         setCart(cart.filter((cartItem) => cartItem.id !== id))
-        let total = totalPrice
+        let total = subtotal
         cart.map(cartItem =>{
             if(cartItem.id === id){
                 total -= cartItem.price
@@ -55,8 +61,12 @@ const POS = () => {
 
             return cartItem
         })
-
-        setTotalPrice(total)
+        const newDiscountedPrice = total * discount
+        const newTotalPrice = total - discountedPrice 
+        setSubtotal(total)
+        setDiscountedPrice(newDiscountedPrice)
+        //Need to fix this (nagnenegative kapag walang laman ang cart)
+        setTotalPrice(newTotalPrice);
 
     }
 
@@ -81,7 +91,11 @@ const POS = () => {
         setCart(newCart)
 
         const newTotal = newCart.reduce((sum, item) => sum + item.price, 0);
-        setTotalPrice(newTotal);
+        const newDiscountedPrice = newTotal * discount
+        const newTotalPrice = newTotal - discountedPrice 
+        setSubtotal(newTotal)
+        setDiscountedPrice(newDiscountedPrice)
+        setTotalPrice(newTotalPrice);
         
     }
 
@@ -100,7 +114,11 @@ const POS = () => {
         setCart(newCart)
 
         const newTotal = newCart.reduce((sum, item) => sum + item.price, 0);
-        setTotalPrice(newTotal);
+        const newDiscountedPrice = newTotal * discount
+        const newTotalPrice = newTotal - discountedPrice 
+        setSubtotal(newTotal)
+        setDiscountedPrice(newDiscountedPrice)
+        setTotalPrice(newTotalPrice);
     }
 
     const handleCheckOut = async() =>{
@@ -131,6 +149,13 @@ const POS = () => {
         }
     }
 
+    const handleClear = () =>{
+        setCart([])
+        setSubtotal(0)
+        setTotalPrice(0)
+        setDiscountedPrice(0)
+    }
+
     useEffect(() =>{
         const fetchProduct = async() =>{
             const response = await fetch('http://127.0.0.1:5000/api/v1/product/')
@@ -147,11 +172,10 @@ const POS = () => {
 
     return ( 
         <div className="sale">
-            <div className="px-5 py-2">
+            <div className="px-3">
                 <div className="row">
-                    <div className="col col-8">
-                        <h1 className="h4 mb-3">Select Product</h1>
-                        <div className="row">
+                    <div className="col col-8 ps-5 pt-2">
+                        <div className="row mt-3">
                             {products && products.map((product) =>(
                                 <POSProductCard 
                                     product={product} 
@@ -161,8 +185,8 @@ const POS = () => {
                             
                         </div>
                     </div>
-                    <div className="col col-4">
-                        <div style={{overflowY: "auto", height: "500px"}}>
+                    <div className="col col-4 py-2 px-3" style={{backgroundColor: '#dcdde1'}}>
+                        <div style={{overflowY: "auto", height: "300px"}}>
                             {cart.map((cartItem) =>(
                                 <CartItem 
                                     key={cartItem.id} 
@@ -172,10 +196,17 @@ const POS = () => {
                                     reduceQuantity={reduceQuantity} />
                             ))}
                         </div>
-                        <div>
-                            <p className='mb-0'>Total: {totalPrice}</p>
-                            <Button variant="success" onClick={handleCheckOut}>Checkout</Button>
-                        </div>
+                        <CartFooter 
+                            handleCheckOut={handleCheckOut} 
+                            handleClear={handleClear} 
+                            subtotal={subtotal}
+                            setTotalPrice={setTotalPrice}
+                            totalPrice={totalPrice}
+                            discount={discount}
+                            discountedPrice={discountedPrice}
+                            setDiscount={setDiscount}
+                            setDiscountedPrice={setDiscountedPrice}
+                        />
                     </div>
                 </div>
 

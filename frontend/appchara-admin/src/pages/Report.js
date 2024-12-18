@@ -44,7 +44,7 @@ const Report = () => {
                                 day: "numeric"
                             })
                             return (
-                                <tr>
+                                <tr key={sale._id}>
                                     <td>{sale._id}</td>
                                     <td>{formatedDate}</td>
                                     <td>₱ {sale.total_sale}.00</td>
