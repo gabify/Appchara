@@ -21,15 +21,20 @@ const POS = () => {
     }
 
     const addToCart = (product) =>{
-        let id = productId
-        const cartItem = {id, product, quantity:1, price: product.price}
-        setProductId(id + 1)
+        if(product.stock <= 0){
+            console.log('Not enough stock')
+            //Add error message
+        }else{
+            let id = productId
+            const cartItem = {id, product, quantity:1, price: product.price}
+            setProductId(id + 1)
 
-        const newCart = [...cart, cartItem]
-        setCart(newCart)
+            const newCart = [...cart, cartItem]
+            setCart(newCart)
 
-        const newTotal = newCart.reduce((sum, item) => sum + item.price, 0);
-        setTotalPrice(newTotal);
+            const newTotal = newCart.reduce((sum, item) => sum + item.price, 0);
+            setTotalPrice(newTotal);
+        }
     }
 
     const removeToCart = (id) =>{
@@ -50,8 +55,13 @@ const POS = () => {
     const addQuantity = (id) =>{
         const newCart = cart.map(cartItem =>{
             if(cartItem.id === id){
-                cartItem.quantity += 1
-                cartItem.price = cartItem.product.price * cartItem.quantity
+                if(cartItem.product.stock <= 1 || cartItem.product.stock === cartItem.quantity){
+                    console.log('Not enough stocks')
+                    //add error message
+                }else{
+                    cartItem.quantity += 1
+                    cartItem.price = cartItem.product.price * cartItem.quantity
+                }
             }
 
             return cartItem
