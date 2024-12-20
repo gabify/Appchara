@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react";
-import {Table} from 'react-bootstrap'
+import {Tabs, Tab} from 'react-bootstrap'
+import SalesReport from "../component/SalesReport";
+import StockReport from "../component/StockReport";
 
 const Report = () => {
     const [sales, setSales] = useState(null)
     const [error, setError] = useState(null)
     const [totalSales, setTotalSales] = useState(0)
+    const [key, setKey] = useState('stock')
 
     useEffect(() =>{
         const fetchSales = async() =>{
@@ -28,35 +31,22 @@ const Report = () => {
     return ( 
         <div className="report">
             <div className="px-5 py-2">
-                <Table bordered hover className="text-center">
-                    <thead>
-                        <tr>
-                            <th>Transaction Id</th>
-                            <th>Date</th>
-                            <th>Amount</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {sales && sales.map((sale) =>{
-                            const formatedDate = new Date (sale.createdAt).toLocaleDateString('en-US', {
-                                year: 'numeric',
-                                month: 'long',
-                                day: "numeric"
-                            })
-                            return (
-                                <tr key={sale._id}>
-                                    <td>{sale._id}</td>
-                                    <td>{formatedDate}</td>
-                                    <td>₱ {sale.total_sale}.00</td>
-                                </tr>
-                            )
-                        })}
-                        <tr>
-                            <td colSpan={2} className="fw-bold text-end">Total Sales:</td>
-                            <td className="fw-bold">₱ {totalSales}.00</td>
-                        </tr>
-                    </tbody>
-                </Table>
+                <Tabs
+                        id="report-tab"
+                        activeKey={key}
+                        onSelect={(k) => setKey(k)}
+                        className="mb-3"
+                        >
+                        <Tab eventKey="stock" title="Stock Report">
+                            <StockReport/>
+                        </Tab>
+                        <Tab eventKey="sales" title="Sales Report">
+                            <SalesReport
+                                sales={sales}
+                                totalSales={totalSales}/>
+                        </Tab>
+                        
+                </Tabs>
             </div>
         </div>
      );
