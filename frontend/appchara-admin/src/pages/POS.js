@@ -49,7 +49,8 @@ const POS = () => {
     }
 
     const removeToCart = (id) =>{
-        setCart(cart.filter((cartItem) => cartItem.id !== id))
+        const newCart = cart.filter((cartItem) => cartItem.id !== id)
+        setCart(newCart)
         let total = subtotal
         cart.map(cartItem =>{
             if(cartItem.id === id){
@@ -65,9 +66,11 @@ const POS = () => {
         const newTotalPrice = total - discountedPrice 
         setSubtotal(total)
         setDiscountedPrice(newDiscountedPrice)
-        //Need to fix this (nagnenegative kapag walang laman ang cart)
-        setTotalPrice(newTotalPrice);
-
+        if(newTotalPrice <= 0){
+            setTotalPrice(0)
+        }else{
+            setTotalPrice(newTotalPrice);
+        }
     }
 
     const addQuantity = (id) =>{
