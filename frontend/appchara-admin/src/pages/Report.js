@@ -7,7 +7,12 @@ const Report = () => {
     const [sales, setSales] = useState(null)
     const [error, setError] = useState(null)
     const [totalSales, setTotalSales] = useState(0)
+    const [availableStock, setAvailableStock] = useState(0)
     const [key, setKey] = useState('stock')
+    const [data, setData] = useState({
+        labels: [],
+        datasets: []    
+    });
 
     useEffect(() =>{
         const fetchSales = async() =>{
@@ -25,8 +30,41 @@ const Report = () => {
             }
         }
 
+        const fetchProduct = async() =>{
+            const response = await fetch('http://127.0.0.1:5000/api/v1/product/')
+            const result = await response.json()
+
+            if(response.ok){
+                setData({
+                    labels: result.map((product) => product.name),
+                    datasets: [
+                        {
+                            label: 'Current Product Stock',
+                            data: result.map(product => product.stock),
+                            backgroundColor: [
+                                'rgba(75,192,192,0.4)',
+                                'rgba(75,192,192,0.4)',
+                                'rgba(75,192,192,0.4)',
+                                'rgba(75,192,192,0.4)'
+                            ],
+                            borderWidth: 1,
+                        }
+                    ]
+                })
+                
+                let stocks = 0
+                result.map((product) =>(
+                    stocks += product.stock
+                ))
+                setAvailableStock(stocks)
+            }
+        }
+
         fetchSales()
+        fetchProduct()
     }, [error])
+
+    console.log(data)
 
     return ( 
         <div className="report">
@@ -38,7 +76,10 @@ const Report = () => {
                         className="mb-3"
                         >
                         <Tab eventKey="stock" title="Stock Report">
-                            <StockReport/>
+                            <StockReport
+                                chartData={data}  
+                                availableStock={availableStock}  
+                            />
                         </Tab>
                         <Tab eventKey="sales" title="Sales Report">
                             <SalesReport
