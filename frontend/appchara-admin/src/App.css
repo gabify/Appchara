@@ -7,13 +7,22 @@
 }
 
 .side-nav-item{
-    padding: 20px 0 5px 7px;
+    padding: 10px 0 5px 7px;
     border-radius: 22px;
+    margin: 5px 0;
 }
+
+.active{
+    padding: 10px 0 5px 7px;
+    border-radius: 22px;
+    background-color: #f5f6fa;
+    color: #10ac84 !important;
+}
+
 
 .side-nav-item:hover{
     background-color: #f5f6fa;
-    color: #10ac84
+    color: #10ac84;
 }
 
 .side-nav-link{
@@ -21,10 +30,5 @@
 }
 
 .side-nav-link:hover{
-    color: #10ac84
-}
-
-.active-side-nav-item{
-    background-color: #f5f6fa;
     color: #10ac84
 }
