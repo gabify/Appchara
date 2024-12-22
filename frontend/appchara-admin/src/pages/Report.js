@@ -8,6 +8,7 @@ const Report = () => {
     const [error, setError] = useState(null)
     const [totalSales, setTotalSales] = useState(0)
     const [availableStock, setAvailableStock] = useState(0)
+    const [stockValue, setStockValue] = useState(0)
     const [key, setKey] = useState('stock')
     const [data, setData] = useState({
         labels: [],
@@ -51,12 +52,17 @@ const Report = () => {
                         }
                     ]
                 })
-                
-                let stocks = 0
-                result.map((product) =>(
-                    stocks += product.stock
-                ))
-                setAvailableStock(stocks)
+
+                const {totalStocks, totalStockValue} = result.reduce(
+                    (acc, product) =>{
+                        acc.totalStocks += product.stock;
+                        acc.totalStockValue += product.stock * product.price;
+                        return acc
+                    },
+                    {totalStocks: 0, totalStockValue: 0}
+                )
+                setAvailableStock(totalStocks)
+                setStockValue(totalStockValue)
             }
         }
 
@@ -79,6 +85,7 @@ const Report = () => {
                             <StockReport
                                 chartData={data}  
                                 availableStock={availableStock}  
+                                stockValue={stockValue}
                             />
                         </Tab>
                         <Tab eventKey="sales" title="Sales Report">
