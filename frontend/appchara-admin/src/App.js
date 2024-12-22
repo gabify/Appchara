@@ -4,31 +4,34 @@ import './App.css'
 
 import Dashboard from './pages/Dashboard'; 
 import Product from './pages/Product';
-import Purchase from './pages/Purchase';
+import Order from './pages/Order';
 import Report from './pages/Report';
-import Sale from './pages/Sale';
+import POS from './pages/POS';
 import SideNav from './component/SideNav';
-import Navbar from './component/Navbar';
+import Notification from './component/Notification';
+import { ProductContextProvider } from './context/ProductContext';
 
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <div className="row g-0">
-          <div className="col col-md-3 vh-100">
-            <SideNav/>
+        <ProductContextProvider>
+          <div className="row g-0">
+            <div className="col col-md-3">
+              <SideNav/>
+            </div>
+            <div className="pages col col-md-9 main">
+              <Notification/>
+              <Routes>
+                <Route path='/' element={<Dashboard/>}/>
+                <Route path='/product' element={<Product/>}/>
+                <Route path='/orders' element={<Order/>}/>
+                <Route path='/report' element={<Report/>}/>
+                <Route path='/pos' element={<POS/>}/>
+              </Routes>
+            </div>
           </div>
-          <div className="pages col col-md-9">
-            <Navbar/>
-            <Routes>
-              <Route path='/' element={<Dashboard/>}/>
-              <Route path='/product' element={<Product/>}/>
-              <Route path='/purchase' element={<Purchase/>}/>
-              <Route path='/report' element={<Report/>}/>
-              <Route path='/sale' element={<Sale/>}/>
-            </Routes>
-          </div>
-        </div>
+        </ProductContextProvider>  
       </BrowserRouter>
     </div>
   );
