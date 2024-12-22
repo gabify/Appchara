@@ -10,7 +10,7 @@ const Report = () => {
     const [availableStock, setAvailableStock] = useState(0)
     const [stockValue, setStockValue] = useState(0)
     const [key, setKey] = useState('stock')
-    const [data, setData] = useState({
+    const [stockData, setStockData] = useState({
         labels: [],
         datasets: []    
     });
@@ -36,7 +36,7 @@ const Report = () => {
             const result = await response.json()
 
             if(response.ok){
-                setData({
+                setStockData({
                     labels: result.map((product) => product.name),
                     datasets: [
                         {
@@ -70,7 +70,7 @@ const Report = () => {
         fetchProduct()
     }, [error])
 
-    console.log(data)
+    console.log(sales)
 
     return ( 
         <div className="report">
@@ -83,7 +83,7 @@ const Report = () => {
                         >
                         <Tab eventKey="stock" title="Stock Report">
                             <StockReport
-                                chartData={data}  
+                                chartData={stockData}  
                                 availableStock={availableStock}  
                                 stockValue={stockValue}
                             />

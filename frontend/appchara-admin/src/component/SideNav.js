@@ -4,9 +4,9 @@ const SideNav = () => {
 
     const handleClick = (e) =>{
         const navLinks = document.querySelectorAll('.side-nav-item')
-        navLinks.forEach(link => link.classList.remove('active'))
+        navLinks.forEach(link => link.classList.remove('side-nav-active'))
 
-        e.currentTarget.classList.add('active')
+        e.currentTarget.classList.add('side-nav-active')
     }
 
     return ( 

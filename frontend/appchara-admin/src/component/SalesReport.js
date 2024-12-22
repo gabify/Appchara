@@ -1,8 +1,38 @@
-import { Table } from "react-bootstrap";
+import { Table, Row } from "react-bootstrap";
+import DashboardCard from './DashboardCard'
+import DataViz from "./DataViz";
 
 const SalesReport = ({sales, totalSales}) => {
     return ( 
         <div className="sales-report">
+            <Row className="mb-3">
+                <DashboardCard 
+                    icon={<i className="bi bi-cash fs-1"></i>}
+                    content={"1,000"}
+                    title={"Total Sales"}
+                />
+                <DashboardCard 
+                    icon={<i className="bi bi-cash-coin fs-1"></i>}
+                    content={"₱ 1,000.00"}
+                    title={"Total Revenue"}
+                />
+                <DashboardCard 
+                    icon={<i className="bi bi-cash-coin fs-1"></i>}
+                    content={"₱ 1,000.00"}
+                    title={"Total Expenses"}
+                />
+                <DashboardCard 
+                    icon={<i className="bi bi-cash-stack fs-1"></i>}
+                    content={"₱ 1,000.00"}
+                    title={"Net Revenue"}
+                />
+            </Row>
+            <p className="h5">How is our atchara's sales performance in December?</p> {/* This should be dynamic month */}
+            <Row>
+                {/* <DataViz />
+                <DataViz />
+ */}
+            </Row>
             <Table bordered hover className="text-center">
                 <thead>
                     <tr>
