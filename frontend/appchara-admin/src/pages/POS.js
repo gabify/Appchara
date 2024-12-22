@@ -9,12 +9,14 @@ const POS = () => {
     const {products, dispatch} = useProductContext()
     const [cart, setCart] = useState([])
     const [productId, setProductId] = useState(0)
-    const [subtotal, setSubtotal] = useState(0)
-    const [totalPrice, setTotalPrice] = useState(0)
     const [discount, setDiscount] = useState(0)
-    const [discountedPrice, setDiscountedPrice] = useState(0)
     const [error, setError] = useState(null)
     const [show, setShow] = useState(false)
+    const [duePayment, setDuePayment] = useState({
+        subtotal: 0,
+        total: 0,
+        discountedPrice: 0
+    })
 
     const handleShow = () =>{
         setShow(true)
@@ -41,17 +43,19 @@ const POS = () => {
 
             const newTotal = newCart.reduce((sum, item) => sum + item.price, 0);
             const newDiscountedPrice = newTotal * discount
-            const newTotalPrice = newTotal - discountedPrice 
-            setSubtotal(newTotal)
-            setDiscountedPrice(newDiscountedPrice)
-            setTotalPrice(newTotalPrice);
+            const newTotalPrice = newTotal - newDiscountedPrice 
+            setDuePayment({
+                subtotal: newTotal,
+                discountedPrice: newDiscountedPrice,
+                total: newTotalPrice
+            })
         }
     }
 
     const removeToCart = (id) =>{
         const newCart = cart.filter((cartItem) => cartItem.id !== id)
         setCart(newCart)
-        let total = subtotal
+        let total = duePayment.subtotal
         cart.map(cartItem =>{
             if(cartItem.id === id){
                 total -= cartItem.price
@@ -63,14 +67,12 @@ const POS = () => {
             return cartItem
         })
         const newDiscountedPrice = total * discount
-        const newTotalPrice = total - discountedPrice 
-        setSubtotal(total)
-        setDiscountedPrice(newDiscountedPrice)
-        if(newTotalPrice <= 0){
-            setTotalPrice(0)
-        }else{
-            setTotalPrice(newTotalPrice);
-        }
+        const newTotalPrice = total - newDiscountedPrice
+        setDuePayment({
+            subtotal: total,
+            discountedPrice: newDiscountedPrice,
+            total: newTotalPrice <= 0 ? 0: newTotalPrice
+        })
     }
 
     const addQuantity = (id) =>{
@@ -95,10 +97,12 @@ const POS = () => {
 
         const newTotal = newCart.reduce((sum, item) => sum + item.price, 0);
         const newDiscountedPrice = newTotal * discount
-        const newTotalPrice = newTotal - discountedPrice 
-        setSubtotal(newTotal)
-        setDiscountedPrice(newDiscountedPrice)
-        setTotalPrice(newTotalPrice);
+        const newTotalPrice = newTotal - newDiscountedPrice
+        setDuePayment({
+            subtotal: newTotal,
+            discountedPrice: newDiscountedPrice,
+            total: newTotalPrice
+        }) 
         
     }
 
@@ -118,10 +122,12 @@ const POS = () => {
 
         const newTotal = newCart.reduce((sum, item) => sum + item.price, 0);
         const newDiscountedPrice = newTotal * discount
-        const newTotalPrice = newTotal - discountedPrice 
-        setSubtotal(newTotal)
-        setDiscountedPrice(newDiscountedPrice)
-        setTotalPrice(newTotalPrice);
+        const newTotalPrice = newTotal - newDiscountedPrice 
+        setDuePayment({
+            subtotal: newTotal,
+            discountedPrice: newDiscountedPrice,
+            total: newTotalPrice
+        })
     }
 
     const handleCheckOut = async() =>{
@@ -130,7 +136,7 @@ const POS = () => {
             sale_per_item: price,
             ...rest
         }))
-        const sale = {sales, total_sale: totalPrice}
+        const sale = {sales, total_sale: duePayment.total}
         console.log(sale)
         const response = await fetch('http://127.0.0.1:5000/api/v1/sale/new', {
             method: "POST",
@@ -146,7 +152,12 @@ const POS = () => {
             console.log(error)
         }else{
             setCart([])
-            setTotalPrice(0)
+            setDiscount(0)
+            setDuePayment({
+                subtotal: 0,
+                discountedPrice: 0,
+                total: 0
+            })
             handleShow()
             //Add alert that the transaction is complete
         }
@@ -154,9 +165,12 @@ const POS = () => {
 
     const handleClear = () =>{
         setCart([])
-        setSubtotal(0)
-        setTotalPrice(0)
-        setDiscountedPrice(0)
+        setDuePayment({
+            subtotal: 0,
+            discountedPrice: 0,
+            total: 0
+        })
+        setDiscount(0)
     }
 
     useEffect(() =>{
@@ -202,13 +216,10 @@ const POS = () => {
                         <CartFooter 
                             handleCheckOut={handleCheckOut} 
                             handleClear={handleClear} 
-                            subtotal={subtotal}
-                            setTotalPrice={setTotalPrice}
-                            totalPrice={totalPrice}
                             discount={discount}
-                            discountedPrice={discountedPrice}
                             setDiscount={setDiscount}
-                            setDiscountedPrice={setDiscountedPrice}
+                            duePayment={duePayment}
+                            setDuePayment={setDuePayment}
                         />
                     </div>
                 </div>
