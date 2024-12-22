@@ -5,11 +5,14 @@ const cors = require('cors')
 const mongoose = require('mongoose')
 
 const productRoutes = require('./routes/productRoutes')
+const userRoutes = require('./routes/userRoutes')
+const orderRoutes = require('./routes/orderRoutes')
+const saleRoutes = require('./routes/saleRoutes')
 const app = express()
 
 //cors enabled endpoints
 let corsOptions = {
-    origin: []
+    origin: 'http://localhost:3000'
 }
 
 //middleware
@@ -24,15 +27,18 @@ mongoose.connect(process.env.DB_URI)
     .then(() =>{
         app.listen(process.env.PORT, ()=>{
             console.log('Connected to database...')
-            console.log(('Listening to port ', process.env.PORT))
-        }).catch(err =>{
-            console.log(err)
+            console.log('Listening to port ', process.env.PORT)
         })
+    }).catch(error =>{
+        console.log(error)
     })
 
 
 let requestMapper = '/api/v1'
-app.use('/product', productRoutes)
+app.use(requestMapper+'/product', productRoutes)
+app.use(requestMapper+'/user', userRoutes)
+app.use(requestMapper+'/order', orderRoutes)
+app.use(requestMapper+'/sale', saleRoutes)
 
 
 //if no request match
