@@ -1,13 +1,16 @@
 import { Button, Form } from "react-bootstrap";
 
-const CartFooter = ({handleCheckOut, handleClear,  subtotal, setTotalPrice,  totalPrice, discount, discountedPrice, setDiscount, setDiscountedPrice}) => {
+const CartFooter = ({handleCheckOut, handleClear, discount, setDiscount, duePayment, setDuePayment}) => {
     const handleDiscount = (e) =>{
         const selectedDiscount = parseFloat(e.target.value)
-        const newDiscountedPrice = subtotal * (selectedDiscount)
-        const newTotalPrice = subtotal - newDiscountedPrice 
+        const newDiscountedPrice = duePayment.subtotal * (selectedDiscount)
+        const newTotalPrice = duePayment.subtotal - newDiscountedPrice 
         setDiscount(selectedDiscount)
-        setDiscountedPrice(newDiscountedPrice)
-        setTotalPrice(newTotalPrice)
+        setDuePayment({
+            subtotal: duePayment.subtotal,
+            discountedPrice: newDiscountedPrice,
+            total: newTotalPrice
+        })
     }
     
     return ( 
@@ -26,15 +29,15 @@ const CartFooter = ({handleCheckOut, handleClear,  subtotal, setTotalPrice,  tot
             </Form.Select>
             <div className="d-flex justify-content-between">
                 <small>Subtotal:</small>
-                <small className="fw-bold">₱ {subtotal.toFixed(2)}</small>
+                <small className="fw-bold">₱ {duePayment.subtotal.toFixed(2)}</small>
             </div>
             <div className="d-flex justify-content-between">
                 <small>Discount ({discount * 100}%):</small>
-                <small className="">- {discountedPrice.toFixed(2)} </small>
+                <small className="">- {duePayment.discountedPrice.toFixed(2)} </small>
             </div>
             <div className="d-flex justify-content-between mb-3">
                 <small>Total:</small>
-                <small className="fw-bold fs-6">₱ {totalPrice.toFixed(2)}</small>
+                <small className="fw-bold fs-6">₱ {duePayment.total.toFixed(2)}</small>
             </div>
             <div className="d-grid">
                 <Button variant="success" className="mb-2" onClick={handleCheckOut}>Checkout</Button>
