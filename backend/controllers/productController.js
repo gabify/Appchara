@@ -20,6 +20,30 @@ const getProducts = async(req, res) =>{
     res.status(200).json(products)
 }
 
+//Get current stock by product
+const getStockByProduct = async(req, res) =>{
+    const products = await Product.find({})
+
+    const labels = products.map((product) => product.name)
+    const data = products.map((product) => product.stock)
+    const backgroundColor = products.map((product) => `rgba(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, 1)`)
+
+    const dataset = {
+        labels,
+        datasets: [
+            {
+                label: 'Stock',
+                data,
+                backgroundColor,
+                borderwidth: 1
+
+            }
+        ]
+    }
+
+    res.status(200).json(dataset)
+}
+
 //Update Product
 const updateProduct = async(req, res) =>{
     const {id} = req.params
@@ -81,6 +105,7 @@ const deleteProduct = async(req, res) =>{
 module.exports = {
     createProduct,
     getProducts,
+    getStockByProduct,
     updateProduct,
     addStock,
     deleteProduct,

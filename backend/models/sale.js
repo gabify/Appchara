@@ -6,7 +6,7 @@ const saleSchema = Schema({
     items: {
         type: [
             {
-                product_id: {
+                product: {
                     type: Schema.Types.ObjectId,
                     required: true,
                     ref: 'Product'
