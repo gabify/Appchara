@@ -133,7 +133,7 @@ const getMonthlySalesByProduct = async(req, res) =>{
                     month: {$month: '$createdAt'},
                     year: {$year: '$createdAt'}
                 },
-                totalSales: {$sum: '$items.sale_per_item'}
+                totalSales: {$sum: '$items.quantity'}
             }
         },
         {
