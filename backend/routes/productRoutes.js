@@ -4,6 +4,7 @@ const router = express.Router()
 const {
     createProduct,
     getProducts,
+    getStockByProduct,
     updateProduct,
     addStock,
     deleteProduct,
@@ -15,6 +16,7 @@ router.post('/new', createProduct)
 
 //GET REQUEST
 router.get('/', getProducts)
+router.get('/stocks', getStockByProduct)
 
 //UPDATE REQUEST
 router.patch('/:id', updateProduct)

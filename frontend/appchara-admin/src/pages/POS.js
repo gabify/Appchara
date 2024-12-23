@@ -132,7 +132,7 @@ const POS = () => {
 
     const handleCheckOut = async() =>{
         const sales = cart.map(({id, product, price, ...rest}) => ({
-            product_id:product._id,
+            product:product._id,
             sale_per_item: price,
             ...rest
         }))
