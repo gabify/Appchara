@@ -56,7 +56,7 @@ const OrderCard = ({order}) => {
 
 
     return ( 
-        <div className="col col-12 mb-3">
+        <div>
             <Card>
                 <Card.Body>
                     <div className="d-flex justify-content-between align-items-center">

@@ -40,7 +40,7 @@ const SalesReport = ({sales, totalSales, salesData}) => {
             </Row>
             <p className="h5 mb-0">How is our Atchara's sales performance?</p>
             <p className="fw-light mb-1">Sales projection from January to December</p>
-            <Row>
+            <Row className="mb-2">
                 <DataViz 
                     chartData={salesData}
                     title={"Monthly Sales Report"}

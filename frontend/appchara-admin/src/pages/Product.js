@@ -1,4 +1,5 @@
 import {useEffect} from 'react'
+import { Row, Col, Container } from 'react-bootstrap'
 import {useProductContext} from '../hooks/useProductContext'
 
 import ProductForm from '../component/ProductForm'
@@ -23,15 +24,18 @@ const Product = () => {
 
 
     return ( 
-        <div className="product">
+        <div className="product my-4">
             <div className="px-5 py-2">
-                <ProductForm/>
-                <div className="row">
+                <Container fluid>
+                <Row>
+                    <Col xs={4}>
+                        <ProductForm/>
+                    </Col>
                     {products && products.map((product) =>(
                         <ProductCard product={product} key={product._id}/>
                     ))}
-                    
-                </div>
+                </Row>
+                </Container>
             </div>
         </div>
      );

@@ -29,8 +29,8 @@ const DataViz = ({title, chartData, chartType, options}) => {
     return ( 
         <Col>
             <Card>
-                <Card.Body className="p-5">
-                    <p className="text-center fw-bold h5">{title}</p>
+                <Card.Body className="px-5">
+                    <p className="text-center fw-bold h5 mb-0">{title}</p>
                     {chartData.labels.length > 0 ? <Chart 
                           chartData={chartData}
                           chartType={chartType}
