@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react'
-import {Toast, ToastContainer} from 'react-bootstrap'
+import {Row, Toast, ToastContainer} from 'react-bootstrap'
 import {useProductContext} from '../hooks/useProductContext'
 import POSProductCard from '../component/POSProductCard'
 import CartItem from '../component/CartItem'
@@ -8,6 +8,7 @@ import CartFooter from '../component/CartFooter'
 const POS = () => {
     const {products, dispatch} = useProductContext()
     const [cart, setCart] = useState([])
+    const [isEmpty, setIsEmpty] = useState(true)
     const [productId, setProductId] = useState(0)
     const [discount, setDiscount] = useState(0)
     const [error, setError] = useState(null)
@@ -37,6 +38,7 @@ const POS = () => {
 
             const newCart = [...cart, cartItem]
             setCart(newCart)
+            setIsEmpty(false)
 
             product.stock -= 1
             dispatch({type: 'UPDATE_PRODUCT', payload: product})
@@ -66,6 +68,10 @@ const POS = () => {
 
             return cartItem
         })
+        if(cart.length === 0){
+            setIsEmpty(true)
+        }
+
         const newDiscountedPrice = total * discount
         const newTotalPrice = total - newDiscountedPrice
         setDuePayment({
@@ -163,7 +169,13 @@ const POS = () => {
         }
     }
 
-    const handleClear = () =>{
+    const handleClear = () =>{ 
+        cart.map(cartItem =>{
+            cartItem.product.stock += cartItem.quantity
+            dispatch({type: 'UPDATE_PRODUCT', payload: cartItem.product})
+
+            return cartItem
+        })
         setCart([])
         setDuePayment({
             subtotal: 0,
@@ -171,6 +183,7 @@ const POS = () => {
             total: 0
         })
         setDiscount(0)
+        setIsEmpty(true)
     }
 
     useEffect(() =>{
@@ -192,7 +205,7 @@ const POS = () => {
             <div className="px-3">
                 <div className="row">
                     <div className="col col-8 ps-5 pt-2">
-                        <div className="row mt-3">
+                        <Row className='mt-3'>
                             {products && products.map((product) =>(
                                 <POSProductCard 
                                     product={product} 
@@ -200,7 +213,7 @@ const POS = () => {
                                     addToCart={addToCart}/>
                             ))}
                             
-                        </div>
+                        </Row>
                     </div>
                     <div className="col col-4 py-2 px-3" style={{backgroundColor: '#dcdde1'}}>
                         <div style={{overflowY: "auto", height: "300px"}}>
@@ -220,6 +233,7 @@ const POS = () => {
                             setDiscount={setDiscount}
                             duePayment={duePayment}
                             setDuePayment={setDuePayment}
+                            isEmpty={isEmpty}
                         />
                     </div>
                 </div>

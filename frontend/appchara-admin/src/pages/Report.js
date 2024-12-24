@@ -14,6 +14,10 @@ const Report = () => {
         labels: [],
         datasets: []    
     });
+    const [saleData, setSaleData] = useState({
+        labels: [],
+        datasets: []    
+    });
 
     useEffect(() =>{
         const fetchSales = async() =>{
@@ -31,43 +35,29 @@ const Report = () => {
             }
         }
 
-        const fetchProduct = async() =>{
-            const response = await fetch('http://127.0.0.1:5000/api/v1/product/')
+        const fetchStock = async() =>{
+            const response = await fetch('http://127.0.0.1:5000/api/v1/product/stocks')
             const result = await response.json()
 
             if(response.ok){
-                setStockData({
-                    labels: result.map((product) => product.name),
-                    datasets: [
-                        {
-                            label: 'Current Product Stock',
-                            data: result.map(product => product.stock),
-                            backgroundColor: [
-                                'rgba(75,192,192,0.4)',
-                                'rgba(75,192,192,0.4)',
-                                'rgba(75,192,192,0.4)',
-                                'rgba(75,192,192,0.4)'
-                            ],
-                            borderWidth: 1,
-                        }
-                    ]
-                })
+                setStockData(result)
+                setAvailableStock(100)
+                setStockValue(100)
+            }
+        }
 
-                const {totalStocks, totalStockValue} = result.reduce(
-                    (acc, product) =>{
-                        acc.totalStocks += product.stock;
-                        acc.totalStockValue += product.stock * product.price;
-                        return acc
-                    },
-                    {totalStocks: 0, totalStockValue: 0}
-                )
-                setAvailableStock(totalStocks)
-                setStockValue(totalStockValue)
+        const fetchSalesData = async() =>{
+            const response = await fetch('http://127.0.0.1:5000/api/v1/sale/2024')
+            const result = await response.json()
+
+            if(response.ok){
+                setSaleData(result)
             }
         }
 
         fetchSales()
-        fetchProduct()
+        fetchStock()
+        fetchSalesData()
     }, [error])
 
     console.log(sales)
@@ -91,7 +81,8 @@ const Report = () => {
                         <Tab eventKey="sales" title="Sales Report">
                             <SalesReport
                                 sales={sales}
-                                totalSales={totalSales}/>
+                                totalSales={totalSales}
+                                salesData={saleData}/>
                         </Tab>
                         
                 </Tabs>

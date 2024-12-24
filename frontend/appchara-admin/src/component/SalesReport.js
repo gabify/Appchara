@@ -2,7 +2,18 @@ import { Table, Row } from "react-bootstrap";
 import DashboardCard from './DashboardCard'
 import DataViz from "./DataViz";
 
-const SalesReport = ({sales, totalSales}) => {
+const SalesReport = ({sales, totalSales, salesData}) => {
+    const options = {
+        plugins: {
+            title: {
+                display: true,
+            },
+            legend: {
+                display: true
+            }
+        }
+      }
+
     return ( 
         <div className="sales-report">
             <Row className="mb-3">
@@ -27,11 +38,16 @@ const SalesReport = ({sales, totalSales}) => {
                     title={"Net Revenue"}
                 />
             </Row>
-            <p className="h5">How is our atchara's sales performance in December?</p> {/* This should be dynamic month */}
-            <Row>
-                {/* <DataViz />
-                <DataViz />
- */}
+            <p className="h5 mb-0">How is our Atchara's sales performance?</p>
+            <p className="fw-light mb-1">Sales projection from January to December</p>
+            <Row className="mb-2">
+                <DataViz 
+                    chartData={salesData}
+                    title={"Monthly Sales Report"}
+                    chartType={"line"}
+                    options={options}
+                />
+
             </Row>
             <Table bordered hover className="text-center">
                 <thead>

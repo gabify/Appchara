@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Tabs, Tab, Badge } from 'react-bootstrap'
+import { Tabs, Tab, Badge, Stack } from 'react-bootstrap'
 import OrderCard from '../component/OrderCard'
 
 const Order = () => {
@@ -46,11 +46,11 @@ const Order = () => {
         }
 
         return(
-            <div className="row">
+            <Stack gap={2}>
                 {filteredOrders.map((order) =>(
                     <OrderCard order={order} key={order._id}/>
                 ))}
-            </div>
+            </Stack>
         )
     }
 

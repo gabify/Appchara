@@ -1,5 +1,5 @@
 import { useState } from "react";
-import {Modal, Button, Form} from 'react-bootstrap'
+import {Modal, Button, Form, Card} from 'react-bootstrap'
 import { useProductContext } from "../hooks/useProductContext";
 
 const ProductForm = () => {
@@ -47,9 +47,29 @@ const ProductForm = () => {
     
     return ( 
         <div className="add-product">
-            <Button variant="success" className="mb-3" onClick={handleShow}>
-                Add Product
-            </Button>
+            
+            <Card 
+                style={{
+                    width: '18rem', 
+                    maxHeight: '24rem', 
+                    minHeight: '24rem',
+                    cursor: 'pointer'
+                }} 
+                onClick={handleShow}
+            >
+                <Card.Body 
+                    className='m-4' 
+                    style={{
+                        height: '100%', 
+                        borderStyle: 'dashed', 
+                        borderColor: '#dfe4ea'
+                    }}
+                >
+                    <div className='position-relative'>
+                        <i className="bi bi-plus" style={{fontSize: '12rem', color: '#dfe4ea'}}></i>
+                    </div>
+                </Card.Body>
+            </Card>
             <Modal show={show} onHide={handleClose} backdrop="static" keyboard={false}>
                 <Modal.Header closeButton>
                     <Modal.Title>Add New Product</Modal.Title>
