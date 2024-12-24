@@ -1,6 +1,6 @@
 import { Button, Form } from "react-bootstrap";
 
-const CartFooter = ({handleCheckOut, handleClear, discount, setDiscount, duePayment, setDuePayment}) => {
+const CartFooter = ({handleCheckOut, handleClear, discount, setDiscount, duePayment, setDuePayment, isEmpty}) => {
     const handleDiscount = (e) =>{
         const selectedDiscount = parseFloat(e.target.value)
         const newDiscountedPrice = duePayment.subtotal * (selectedDiscount)
@@ -39,10 +39,16 @@ const CartFooter = ({handleCheckOut, handleClear, discount, setDiscount, duePaym
                 <small>Total:</small>
                 <small className="fw-bold fs-6">₱ {duePayment.total.toFixed(2)}</small>
             </div>
-            <div className="d-grid">
-                <Button variant="success" className="mb-2" onClick={handleCheckOut}>Checkout</Button>
-                <Button variant="danger" onClick={handleClear}>Clear</Button>
-            </div>
+            {isEmpty ? (
+                <div className="d-grid">
+                    <Button disabled variant="success" className="mb-2">Checkout</Button>
+                    <Button disabled variant="danger">Clear</Button>
+                </div>):(
+                <div className="d-grid">
+                    <Button variant="success" className="mb-2" onClick={handleCheckOut}>Checkout</Button>
+                    <Button variant="danger" onClick={handleClear}>Clear</Button>
+                </div>
+            )}
         </div>
      );
 }
