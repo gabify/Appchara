@@ -3,7 +3,7 @@ import DashboardCard from "./DashboardCard";
 import DataViz from "./DataViz";
 
 
-const StockReport = ({chartData, availableStock, stockValue}) => {
+const StockReport = ({chartData, stockDashboard}) => {
     const options = {
         plugins: {
             title: {
@@ -20,12 +20,12 @@ const StockReport = ({chartData, availableStock, stockValue}) => {
             <Row>
                 <DashboardCard 
                     icon={<i className="bi bi-box2 fs-1"></i>}
-                    content={availableStock}
-                    title={"Available Stock Now"}
+                    content={stockDashboard ? stockDashboard.currentStock: 'Loading...'}
+                    title={"Current Stock"}
                 />
                 <DashboardCard 
                     icon={<i className="bi bi-cash-coin fs-1"></i>}
-                    content={`₱ ${stockValue.toFixed(2).toLocaleString('en-US')}`}
+                    content={stockDashboard ? `₱ ${stockDashboard.stockValue}` : 'Loading..'}
                     title={"Stock Value"}
                 />
                 <DashboardCard 

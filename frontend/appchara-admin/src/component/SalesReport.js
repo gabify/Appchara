@@ -2,7 +2,7 @@ import { Table, Row } from "react-bootstrap";
 import DashboardCard from './DashboardCard'
 import DataViz from "./DataViz";
 
-const SalesReport = ({sales, totalSales, salesData}) => {
+const SalesReport = ({sales, totalSales, salesData, salesDashboard}) => {
     const options = {
         plugins: {
             title: {
@@ -19,12 +19,12 @@ const SalesReport = ({sales, totalSales, salesData}) => {
             <Row className="mb-3">
                 <DashboardCard 
                     icon={<i className="bi bi-cash fs-1"></i>}
-                    content={"1,000"}
+                    content={salesDashboard ? salesDashboard.totalSale : 'Loading...'}
                     title={"Total Sales"}
                 />
                 <DashboardCard 
                     icon={<i className="bi bi-cash-coin fs-1"></i>}
-                    content={"₱ 1,000.00"}
+                    content={salesDashboard ? `₱ ${salesDashboard.totalRevenue}` : 'Loading...'}
                     title={"Total Revenue"}
                 />
                 <DashboardCard 

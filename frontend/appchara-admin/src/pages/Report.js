@@ -6,9 +6,9 @@ import StockReport from "../component/StockReport";
 const Report = () => {
     const [sales, setSales] = useState(null)
     const [error, setError] = useState(null)
+    const [salesDashboard, setSalesDashboard] = useState({})
+    const [stockDashboard, setStockDashboard] = useState({})
     const [totalSales, setTotalSales] = useState(0)
-    const [availableStock, setAvailableStock] = useState(0)
-    const [stockValue, setStockValue] = useState(0)
     const [key, setKey] = useState('stock')
     const [stockData, setStockData] = useState({
         labels: [],
@@ -41,8 +41,15 @@ const Report = () => {
 
             if(response.ok){
                 setStockData(result)
-                setAvailableStock(100)
-                setStockValue(100)
+            }
+        }
+
+        const fetchStockDasboardData = async() =>{
+            const response = await fetch('http://127.0.0.1:5000/api/v1/product/dashboard')
+            const result = await response.json()
+
+            if(response.ok){
+                setStockDashboard(result)
             }
         }
 
@@ -55,9 +62,20 @@ const Report = () => {
             }
         }
 
+        const fetchSaleDashboardData = async() =>{
+            const response = await fetch('http://127.0.0.1:5000/api/v1/sale/dashboard/2024')
+            const result = await response.json()
+
+            if(response.ok){
+                setSalesDashboard(result)
+            }
+        }
+
         fetchSales()
         fetchStock()
         fetchSalesData()
+        fetchSaleDashboardData()
+        fetchStockDasboardData()
     }, [error])
 
     console.log(sales)
@@ -74,15 +92,15 @@ const Report = () => {
                         <Tab eventKey="stock" title="Stock Report">
                             <StockReport
                                 chartData={stockData}  
-                                availableStock={availableStock}  
-                                stockValue={stockValue}
+                                stockDashboard={stockDashboard}
                             />
                         </Tab>
                         <Tab eventKey="sales" title="Sales Report">
                             <SalesReport
                                 sales={sales}
                                 totalSales={totalSales}
-                                salesData={saleData}/>
+                                salesData={saleData}
+                                salesDashboard={salesDashboard}/>
                         </Tab>
                         
                 </Tabs>

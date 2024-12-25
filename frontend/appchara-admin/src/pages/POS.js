@@ -165,6 +165,7 @@ const POS = () => {
                 total: 0
             })
             handleShow()
+            setIsEmpty(true)
             //Add alert that the transaction is complete
         }
     }
