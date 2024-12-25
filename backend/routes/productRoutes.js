@@ -5,6 +5,7 @@ const {
     createProduct,
     getProducts,
     getStockByProduct,
+    getCurrentDashboardData,
     updateProduct,
     addStock,
     deleteProduct,
@@ -17,6 +18,7 @@ router.post('/new', createProduct)
 //GET REQUEST
 router.get('/', getProducts)
 router.get('/stocks', getStockByProduct)
+router.get('/dashboard', getCurrentDashboardData)
 
 //UPDATE REQUEST
 router.patch('/:id', updateProduct)

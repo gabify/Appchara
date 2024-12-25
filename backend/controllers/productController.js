@@ -44,6 +44,18 @@ const getStockByProduct = async(req, res) =>{
     res.status(200).json(dataset)
 }
 
+const getCurrentDashboardData = async(req, res) =>{
+    const products = await Product.find({})
+
+    const currentStock = products.reduce((acc, current) => acc + current.stock, 0)
+    const stockValue = products.reduce((acc, current) => acc + current.stock * current.price, 0)
+    //Current Stock in
+    //current stock out
+
+
+    res.status(200).json({currentStock, stockValue})
+}
+
 //Update Product
 const updateProduct = async(req, res) =>{
     const {id} = req.params
@@ -106,6 +118,7 @@ module.exports = {
     createProduct,
     getProducts,
     getStockByProduct,
+    getCurrentDashboardData,
     updateProduct,
     addStock,
     deleteProduct,

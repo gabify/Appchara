@@ -111,7 +111,7 @@ const getMonthlySalesByProduct = async(req, res) =>{
     }
 
     if(year >= 2100 || year <=1900){
-        res.status(400).json({error: "No valid data on the year"})
+        res.status(400).json({error: "No valid data on that year"})
     }
 
     const sales = await Sale.aggregate([
@@ -158,6 +158,12 @@ const getMonthlySalesByProduct = async(req, res) =>{
 
     ])
 
+    const filteredSales = sales.map((sale) =>{
+        const monthlyData = sale.monthlyData.filter((entry) => entry.year === parseInt(year))
+        sale.monthlyData = monthlyData
+        return sale
+    })
+
     const generateRandomColor = (opacity = 1) => {
         const r = Math.floor(Math.random() * 255);
         const g = Math.floor(Math.random() * 255);
@@ -183,13 +189,42 @@ const getMonthlySalesByProduct = async(req, res) =>{
                 label: product.product,
                 data,
                 borderColor: generateRandomColor(),
-                backgroundColor: generateRandomColor(0.4)
+                backgroundColor: 'rgba(34, 166, 179,1.0)'
             }
         })
 
         return {labels, datasets}
     }
-    res.status(200).json(transformToChartData(sales))
+    res.status(200).json(transformToChartData(filteredSales))
 }
 
-module.exports = {createSale, getSales, getMonthlySalesByProduct}
+const getDashboardDataByYear = async(req, res) =>{
+    const {year} = req.params
+
+    if(typeof year === Number){
+        res.status(400).json({error: "Invalid year"})
+    }
+
+    if(year >= 2100 || year <=1900){
+        res.status(400).json({error: "No valid data on that year"})
+    }
+
+    const sales = await Sale.find({
+        createdAt: {$gte: new Date(`${year}-01-01`), $lt: new Date(`${year}-12-31`)}
+    })
+
+    let totalSale = 0
+    sales.forEach(sale =>{
+        const count = sale.items.reduce((acc, current) => acc + current.quantity, 0)
+        totalSale += count
+    })
+    const totalRevenue = sales.reduce((acc, current) => acc + current.total_sale, 0)
+
+    //Total Expense
+
+    //Net Revenue
+    
+    res.status(200).json({totalSale, totalRevenue})
+}
+
+module.exports = {createSale, getSales, getMonthlySalesByProduct, getDashboardDataByYear}
