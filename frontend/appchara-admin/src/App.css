@@ -1,3 +1,26 @@
+html, body{
+    height: 100vh;
+    margin: 0;
+}
+
+.App{
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.g-0{
+    height: 100vh;
+    display: flex;
+}
+
+.pages{
+    height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+
 .sidenav{
     background-image: linear-gradient(to bottom right, #10ac84 , #fff200);
 }

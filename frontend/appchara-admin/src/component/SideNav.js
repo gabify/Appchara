@@ -10,7 +10,7 @@ const SideNav = () => {
     }
 
     return ( 
-        <div className="sidenav px-4 py-5" style={{height: '100vh'}}>
+        <div className="sidenav px-4 py-5" style={{height: '100vh', overflow:"hidden"}}>
             <h1 className="fs-4 ms-3 mb-5">Appchara</h1>
             <ul className="nav flex-column">
                 <li className="nav-item side-nav-item"

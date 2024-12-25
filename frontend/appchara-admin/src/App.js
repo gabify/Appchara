@@ -1,4 +1,5 @@
 import {BrowserRouter, Route, Routes} from 'react-router-dom'
+import { Row, Col } from 'react-bootstrap';
 import './App.css'
 
 
@@ -13,14 +14,14 @@ import { ProductContextProvider } from './context/ProductContext';
 
 function App() {
   return (
-    <div className="App">
+    <div className="App" >
       <BrowserRouter>
         <ProductContextProvider>
-          <div className="row g-0">
-            <div className="col col-md-3">
+          <Row className='g-0'>
+            <Col xs={3}>
               <SideNav/>
-            </div>
-            <div className="pages col col-md-9 main">
+            </Col>
+            <Col xs={9} className='pages main'>
               <Notification/>
               <Routes>
                 <Route path='/' element={<Dashboard/>}/>
@@ -29,8 +30,8 @@ function App() {
                 <Route path='/report' element={<Report/>}/>
                 <Route path='/pos' element={<POS/>}/>
               </Routes>
-            </div>
-          </div>
+            </Col>
+          </Row>
         </ProductContextProvider>  
       </BrowserRouter>
     </div>
