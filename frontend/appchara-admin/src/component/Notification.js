@@ -2,7 +2,7 @@ import { Container, Navbar } from "react-bootstrap";
 
 const Notification = () => {
     return ( 
-        <Navbar style={{backgroundColor: '#f5f6fa'}} sticky="top">
+        <Navbar style={{backgroundColor: '#dfe4ea'}} sticky="top">
             <Container>
                 <Navbar.Brand>Conching's Atchara Admin Platform</Navbar.Brand>
                 <div className="d-flex justify-content-end fs-5">
