@@ -61,8 +61,8 @@ const OrderCard = ({order}) => {
                 <Card.Body>
                     <div className="d-flex justify-content-between align-items-center">
                         <div>
-                            <Card.Title>{order.user.name}</Card.Title>
-                            <Card.Subtitle>Status: {order.status}</Card.Subtitle>
+                            <Card.Title className='mb-0'>{order.user.name}</Card.Title>
+                            <span className='text-muted fw-semibold'>{order.status}</span>
                         </div>
                         <div className="d-flex justify-content-evenly">
                             <span className='me-2' style={{cursor: 'pointer'}} onClick={handleShowDetails}>View Order</span>

@@ -19,12 +19,14 @@ const CartItem = ({cartItem, deleteItem, addQuantity, reduceQuantity}) => {
                 <Card.Body>
                     <div className='d-flex justify-content-between mb-2'>
                         <span className='fw-bold'>{cartItem.product.name}</span>
-                        <span className='fw-bold'>₱ {cartItem.price}.00</span>
-                        <div>
-                            <i 
-                                className="bi bi-x-circle-fill text-secondary" 
-                                style={{cursor: "pointer"}}
-                                onClick={handleDelete}></i>
+                        <div className="d-flex">
+                            <span className='fw-bold me-3'>₱ {cartItem.price}.00</span>
+                            <div>
+                                <i 
+                                    className="bi bi-x-circle-fill text-secondary" 
+                                    style={{cursor: "pointer"}}
+                                    onClick={handleDelete}></i>
+                            </div>
                         </div>
                     </div>
                     <div className="d-flex">

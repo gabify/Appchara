@@ -10,24 +10,33 @@ const OrderDetails = ({order, showDetails, handleCloseDetails, handleComplete, h
         <div className='order-details'>
             <Modal show={showDetails} onHide={handleCloseDetails} backdrop="static" keyboard={false}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Order Details</Modal.Title>
+                    <Modal.Title><i className="bi bi-cart-fill"></i></Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <div className="d-flex">
-                        <p className='me-2'>Order Id: </p>
-                        <p className="fw-bold">{order._id}</p>
+                    <h5 className='fw-bold mb-0'>Order Details</h5>
+                    <span className='fw-light text-muted'>What do you want to do with this order?</span>
+                    <div className="mb-2 mt-3">
+                        <p className='fw-semibold mb-0'>Order number</p>
+                        <p className="fw-light">#{order._id}</p>
                     </div>
-                    <div className="d-flex">
-                        <p className='me-2'>Order By: </p>
-                        <p className="fw-bold">{order.user.name}</p>
+                    <div className="d-flex justify-content-between">
+                        <div>
+                            <p className='fw-semibold mb-0'>Customer Name </p>
+                            <p className="fw-light">{order.user.name}</p>
+                        </div>
+                        <div className>
+                            <p className='fw-semibold mb-0'>Date Ordered </p>
+                            <p className="fw-light">
+                                {order.createdAt} 
+                                <span className='ms-1 fw-bold'>
+                                    ({formatDistanceToNow(new Date(order.createdAt), {addSuffix: true})})
+                                </span>
+                            </p>
+                        </div>
                     </div>
-                    <div className="d-flex">
-                        <p className='me-2'>Status: </p>
-                        <p className="fw-bold">{order.status}</p>
-                    </div>
-                    <div className="d-flex">
-                        <p className='me-2'>Order Date: </p>
-                        <p className="fw-bold">{formatDistanceToNow(new Date(order.createdAt), {addSuffix: true})}</p>
+                    <div className>
+                        <p className='fw-semibold mb-0'>Status</p>
+                        <p className="fw-light">{order.status}</p>
                     </div>
                     <hr />
                     <Table borderless hover size='sm' className='px-5'>

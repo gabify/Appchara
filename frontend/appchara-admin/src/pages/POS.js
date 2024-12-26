@@ -217,7 +217,7 @@ const POS = () => {
                         </Row>
                     </div>
                     <div className="col col-4 py-2 px-3" style={{backgroundColor: '#dcdde1'}}>
-                        <div style={{overflowY: "auto", height: "300px"}}>
+                        <div style={{overflowY: "auto", height: "306px"}}>
                             {cart.map((cartItem) =>(
                                 <CartItem 
                                     key={cartItem.id} 
