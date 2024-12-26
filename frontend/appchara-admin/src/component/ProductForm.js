@@ -1,5 +1,5 @@
 import { useState } from "react";
-import {Modal, Button, Form, Card, InputGroup, Spinner} from 'react-bootstrap'
+import {Modal, Button, Form, Card, InputGroup, Spinner, ProgressBar} from 'react-bootstrap'
 import { useProductContext } from "../hooks/useProductContext";
 
 const ProductForm = () => {
@@ -74,40 +74,71 @@ const ProductForm = () => {
                     </div>
                 </Card.Body>
             </Card>
-            <Modal show={show} onHide={handleClose} backdrop="static" keyboard={false}>
+            <Modal 
+                show={show} 
+                onHide={handleClose} 
+                backdrop="static" 
+                keyboard={false} 
+            >
                 <Modal.Header closeButton>
                     <Modal.Title><i className="bi bi-basket-fill"></i></Modal.Title>
                 </Modal.Header>
-                <Form onSubmit={handleSubmit}>
-                    <Modal.Body className="px-4">
-                        <h5 className="fw-semibold mb-0">Create New Product</h5>
-                        <small className="fw-light text-muted">Enter Product Details</small>
-                        <Form.Group className="mb-2 mt-3" controlId="productForm.name">
-                            <Form.Label className="fw-semibold" style={{fontSize:'0.94rem'}}>Product Name</Form.Label>
+                <Modal.Body className="px-4">
+                    <h5 className="fw-semibold mb-0">Create New Product</h5>
+                    <small className="fw-light text-muted">Enter Product Details</small>
+                    <Form onSubmit={handleSubmit}>
+                        <Form.Group className="my-2" controlId="productForm.name">
+                            <Form.Label className="fw-semibold mb-0" style={{fontSize:'0.94rem'}}>Product Name</Form.Label>
                             <Form.Control 
                                 type="text" 
                                 onChange={(e) => setName(e.target.value)} 
                                 value={name}
                                 placeholder="What is the name of the product?"
                                 style={{fontSize: '0.99rem'}}
+                                required
                             />
                         </Form.Group>
                         <Form.Group className="mb-2" controlId="productForm.description">
-                            <Form.Label className="fw-semibold" style={{fontSize:'0.94rem'}}>Description</Form.Label>
+                            <Form.Label className="fw-semibold mb-0" style={{fontSize:'0.94rem'}}>Description</Form.Label>
                             <Form.Control 
                                 as="textarea" 
                                 onChange={(e) => setDescription(e.target.value)} 
                                 value={description}
                                 placeholder="Provide some information about the product..."
+                                required
                             />
                         </Form.Group>
-                        <Form.Group controlId="formFile" className="mb-3">
-                            <Form.Label className="fw-semibold" style={{fontSize:'0.94rem'}}>Product Image</Form.Label>
-                            <Form.Control type="file" />
-                        </Form.Group>
-                        <div className="d-flex justify-content-between">
+                        <div className="mb-2">
+                            <p className="mb-1 fw-semibold" style={{fontSize:'0.94rem'}}>
+                                Upload Image
+                                <small className="fw-light ms-1">(Optional)</small>
+                            </p>
+                            <div className="d-flex justify-content-between">
+                                <div>
+                                    <input 
+                                        type="file" 
+                                        id="imageUpload" 
+                                        className="upload" 
+                                        accept=".jpg, .jpeg, .png"
+                                        hidden
+                                    />
+                                    <label htmlFor="imageUpload" className="uploadLabel">
+                                        <span className="mt-3">
+                                            <i 
+                                                className="bi bi-cloud-arrow-up-fill text-success"
+                                                style={{fontSize: '30px'}}></i>
+                                        </span>
+                                        <p className="fw-semibold fs-6 text-success">Drag image here or browse</p>
+                                    </label>
+                                </div>
+                                <div className="uploadedImage">
+                                    <ProgressBar animated now={45} variant="success"/> {/* not showing, duuno why :( */}
+                                </div>
+                            </div>
+                        </div>
+                        <div className="d-flex justify-content-between mb-4">
                             <Form.Group className="me-2" controlId="productForm.price">
-                                <Form.Label className="fw-semibold" style={{fontSize:'0.94rem'}}>Product Price</Form.Label>
+                                <Form.Label className="fw-semibold mb-0" style={{fontSize:'0.94rem'}}>Product Price</Form.Label>
                                 <InputGroup>
                                     <InputGroup.Text id="basic-addon1">₱</InputGroup.Text>
                                     <Form.Control 
@@ -115,36 +146,42 @@ const ProductForm = () => {
                                         onChange={(e) => setPrice(e.target.value)} 
                                         value={price}
                                         placeholder="Initial product price"
+                                        required
                                     />
                                 </InputGroup>
                             </Form.Group>
-                            <Form.Group className="mb-4" controlId="productForm.stock">
-                                <Form.Label className="fw-semibold" style={{fontSize:'0.94rem'}}>Product Stock</Form.Label>
+                            <Form.Group controlId="productForm.stock">
+                                <Form.Label className="fw-semibold mb-0" style={{fontSize:'0.94rem'}}>Product Stock</Form.Label>
                                 <Form.Control 
                                     type="number" 
                                     onChange={(e) => setStock(e.target.value)} 
                                     value={stock}
                                     placeholder="Initial product stock"
+                                    required
                                 />
                             </Form.Group>
                         </div>
-
                         <div className="d-grid gap-2 mx-auto">
-                            <Button type="submit" value="submit" variant="success">
-                                {isLoading ? (<Spinner
-                                    as="span"
-                                    animation="border"
-                                    size="sm"
-                                    role="status"
-                                    aria-hidden="true"
-                                    />) : 'Confirm'}
-                            </Button>
+                            {isLoading ? (
+                                <Button type="submit" value="submit" variant="success" disabled>
+                                    <Spinner
+                                        as="span"
+                                        animation="border"
+                                        size="sm"
+                                        role="status"
+                                        aria-hidden="true"
+                                        />
+                                </Button>) :(
+                                <Button type="submit" value="submit" variant="success">
+                                    Confirm
+                                </Button>
+                            )}
                             <Button variant="outline-secondary" onClick={handleClose}>
                                 Cancel
                             </Button>
                         </div>
-                    </Modal.Body>
-                </Form>
+                    </Form>
+                </Modal.Body>
             </Modal>
         </div>
      );

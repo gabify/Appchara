@@ -55,3 +55,16 @@ html, body{
 .side-nav-link:hover{
     color: #10ac84
 }
+
+.uploadLabel{
+    height: 100px; 
+    width: 189px;
+    border: 3px dashed #dfe4ea;
+    border-radius: 5px;
+    cursor: pointer; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}

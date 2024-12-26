@@ -10,7 +10,7 @@ const createProduct = async(req, res) =>{
         const product = await Product.create({name, price, stock, description})
         res.status(200).json(product)
     }catch(error){
-        res.status(500).json({error: err})
+        res.status(500).json({error: error})
     }
 }
 
