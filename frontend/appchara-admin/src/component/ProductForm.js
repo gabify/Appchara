@@ -101,7 +101,8 @@ const ProductForm = () => {
                         <Form.Group className="mb-2" controlId="productForm.description">
                             <Form.Label className="fw-semibold mb-0" style={{fontSize:'0.94rem'}}>Description</Form.Label>
                             <Form.Control 
-                                as="textarea" 
+                                as="textarea"
+                                rows={3} 
                                 onChange={(e) => setDescription(e.target.value)} 
                                 value={description}
                                 placeholder="Provide some information about the product..."

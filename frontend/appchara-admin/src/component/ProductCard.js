@@ -22,12 +22,12 @@ const ProductCard = ({product}) => {
             <Card style={{width: '18rem', maxHeight: '24rem', minHeight: '24rem'}}>
                 <Card.Img variant='top' src={productLogo}/>
                 <Card.Body>
-                    <Card.Title>{product.name}</Card.Title>
-                    <Card.Subtitle className='mb-2 text-muted'>{product.stock} left</Card.Subtitle>
+                    <Card.Title className='text-success'>{product.name}</Card.Title>
+                    <Card.Subtitle className='mb-2 text-muted'>{product.stock} available</Card.Subtitle>
                     <Card.Text>{product.description}</Card.Text>
                     <Stack direction='horizontal' gap={2}>
-                        <Button variant='warning' onClick={handleShowEdit}>Edit</Button>
-                        <Button variant='danger' onClick={handleShowDelete}>Delete</Button>
+                        <Button variant='outline-secondary' onClick={handleShowEdit}>Edit</Button>
+                        <Button variant='outline-danger' onClick={handleShowDelete}>Delete</Button>
                     </Stack>
                 </Card.Body>
             </Card>
