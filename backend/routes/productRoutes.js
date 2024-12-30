@@ -1,5 +1,4 @@
 const express = require('express')
-const router = express.Router()
 
 const {
     createProduct,
@@ -10,6 +9,10 @@ const {
     addStock,
     deleteProduct,
 } = require('../controllers/productController')
+const requireAuth = require('../middleware/requireAuth')
+
+const router = express.Router()
+router.use(requireAuth)
 
 
 //POST REQUEST
