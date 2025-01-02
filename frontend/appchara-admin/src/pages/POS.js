@@ -1,11 +1,13 @@
-import {useEffect, useState} from 'react'
-import {Row, Toast, ToastContainer} from 'react-bootstrap'
+import { useEffect, useState } from 'react'
+import {Row, Toast, ToastContainer, Spinner} from 'react-bootstrap'
 import {useProductContext} from '../hooks/useProductContext'
 import POSProductCard from '../component/POSProductCard'
 import CartItem from '../component/CartItem'
 import CartFooter from '../component/CartFooter'
+import useFetch from '../hooks/useFetch'
 
 const POS = () => {
+    const {data, isLoading, error: productError} = useFetch('http://127.0.0.1:5000/api/v1/product/')
     const {products, dispatch} = useProductContext()
     const [cart, setCart] = useState([])
     const [isEmpty, setIsEmpty] = useState(true)
@@ -19,6 +21,12 @@ const POS = () => {
         discountedPrice: 0
     })
 
+    useEffect(() =>{
+        if(data){
+            dispatch({type: 'SET_PRODUCTS', payload: data})
+        }
+    }, [data, dispatch])
+
     const handleShow = () =>{
         setShow(true)
     }
@@ -26,6 +34,7 @@ const POS = () => {
     const handleClose = () =>{
         setShow(false)
     }
+    
 
     const addToCart = (product) =>{
         if(product.stock <= 0){
@@ -186,35 +195,33 @@ const POS = () => {
         setDiscount(0)
         setIsEmpty(true)
     }
-
-    useEffect(() =>{
-        const fetchProduct = async() =>{
-            const response = await fetch('http://127.0.0.1:5000/api/v1/product/')
-            const result = await response.json()
-
-            if(response.ok){
-                dispatch({type: 'SET_PRODUCTS', payload: result})
-            }
-        }
-
-        fetchProduct()
-    }, [dispatch])
-
-
     return ( 
         <div className="sale">
             <div className="px-3">
                 <div className="row">
                     <div className="col col-8 ps-5 pt-2">
-                        <Row className='mt-3'>
-                            {products && products.map((product) =>(
-                                <POSProductCard 
-                                    product={product} 
-                                    key={product._id} 
-                                    addToCart={addToCart}/>
-                            ))}
-                            
-                        </Row>
+                        {isLoading && (
+                            <Spinner variant='success' animation="border" role="status">
+                                <span className="visually-hidden">Loading...</span>
+                            </Spinner>
+                        )}
+
+                        {productError && (
+                            <div className="text-center">
+                                {error}
+                            </div>
+                        )}
+                        {products && (
+                            <Row className='mt-3'>
+                                {products && products.map((product) =>(
+                                    <POSProductCard 
+                                        product={product} 
+                                        key={product._id} 
+                                        addToCart={addToCart}/>
+                                ))}
+                                
+                            </Row>
+                        )}
                     </div>
                     <div className="col col-4 py-2 px-3" style={{backgroundColor: '#dcdde1'}}>
                         <div style={{overflowY: "auto", height: "306px"}}>
