@@ -1,48 +1,21 @@
-import {useNavigate} from 'react-router-dom'
 import { useState } from 'react';
 import {Card, Form,Button, Spinner} from 'react-bootstrap'
+import { useLogin } from '../hooks/useLogin';
 
 const Login = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [fieldType, setFieldType] = useState('password')
-    const [error, setError] = useState(null)
-    const [isLoading, setIsLoading] = useState(false)
-    const navigate = useNavigate()
+    const {login, isLoading, error} = useLogin()
 
     const handleChange = () => fieldType === 'password' ? setFieldType('text') : setFieldType('password')
 
     const handleSubmit = async(e) =>{
         e.preventDefault()
-        setIsLoading(true)
 
         //validate input first
         const user = {email,password}
-
-        const response = await fetch('http://127.0.0.1:5000/api/v1/user/login', {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(user)
-        })
-
-        const result = await response.json()
-
-        if(!response.ok){
-            setError(result.error)
-            setIsLoading(false)
-        }
-
-        if(result.user_type === 'customer'){
-            setError('You do not have an admin permission')
-            setIsLoading(false)
-        }
-
-        if(result.user_type === 'admin'){
-            navigate('/main/dashboard')
-        }
-
+        login(user)
     }
 
 
