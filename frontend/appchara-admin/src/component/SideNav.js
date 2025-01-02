@@ -16,7 +16,7 @@ const SideNav = () => {
                 <li className="nav-item side-nav-item"
                     onClick={handleClick}>
                     <SideNavItem 
-                        linkTo={"/"}
+                        linkTo={"/main/dashboard"}
                         linkTitle={"Dashboard"}
                         icon={<i className="bi bi-house-fill me-2"></i>}
                     />
@@ -24,7 +24,7 @@ const SideNav = () => {
                 <li className="nav-item side-nav-item"
                     onClick={handleClick}>
                     <SideNavItem 
-                        linkTo={"/product"}
+                        linkTo={"/main/product"}
                         linkTitle={"Product Inventory"}
                         icon={<i className="bi bi-basket-fill me-2"></i>}
                     />
@@ -32,7 +32,7 @@ const SideNav = () => {
                 <li className="nav-item side-nav-item"
                     onClick={handleClick}>
                     <SideNavItem 
-                        linkTo={"/pos"}
+                        linkTo={"/main/pos"}
                         linkTitle={"Point of Sale"}
                         icon={<i className="bi bi-shop-window me-2"></i>}
                     />
@@ -40,7 +40,7 @@ const SideNav = () => {
                 <li className="nav-item side-nav-item"
                     onClick={handleClick}>
                     <SideNavItem 
-                        linkTo={"/orders"}
+                        linkTo={"/main/orders"}
                         linkTitle={"Orders"}
                         icon={<i className="bi bi-cart-fill me-1"></i>}
                     />
@@ -48,7 +48,7 @@ const SideNav = () => {
                 <li className="nav-item side-nav-item"
                     onClick={handleClick}>
                     <SideNavItem 
-                        linkTo={"/report"}
+                        linkTo={"/main/report"}
                         linkTitle={"Reports"}
                         icon={<i className="bi bi-clipboard-data-fill me-1"></i>}
                     />

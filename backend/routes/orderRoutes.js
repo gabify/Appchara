@@ -1,7 +1,15 @@
 const express = require('express')
-const router = express.Router()
+const requireAuth = require('../middleware/requireAuth')
 
-const {createOrder, getOrders, completeOrder, cancelOrder, getOrderByUser} = require('../controllers/orderController')
+const {
+    createOrder, 
+    getOrders, 
+    completeOrder, 
+    cancelOrder, 
+    getOrderByUser} = require('../controllers/orderController')
+
+const router = express.Router()
+router.use(requireAuth)
 
 //POST REQUEST
 router.post('/new', createOrder)

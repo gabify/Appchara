@@ -1,27 +1,19 @@
-import {useEffect} from 'react'
 import { Row, Col, Container } from 'react-bootstrap'
 import {useProductContext} from '../hooks/useProductContext'
 
 import ProductForm from '../component/ProductForm'
 import ProductCard from '../component/ProductCard'
+import { useRequest } from '../hooks/useRequest'
 
 
 const Product = () => {
     const {products, dispatch} = useProductContext()
+    const {useFetch, data} = useRequest()
+    useFetch('http://127.0.0.1:5000/api/v1/product/')
 
-    useEffect(() =>{
-        const fetchProduct = async() =>{
-            const response = await fetch('http://127.0.0.1:5000/api/v1/product/')
-            const result = await response.json()
-
-            if(response.ok){
-                dispatch({type: 'SET_PRODUCTS', payload: result})
-            }
-        }
-
-        fetchProduct()
-    }, [dispatch])
-
+    if(data){
+        dispatch({type: 'SET_PRODUCTS', payload: data})
+    }
 
     return ( 
         <div className="product my-4">
