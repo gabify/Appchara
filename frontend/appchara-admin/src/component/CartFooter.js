@@ -1,18 +1,7 @@
 import { Button, Form, Spinner } from "react-bootstrap";
 
 const CartFooter = ({handleCheckOut, handleClear, discount, setDiscount, duePayment, setDuePayment, isEmpty, isLoading}) => {
-    const handleDiscount = (e) =>{
-        const selectedDiscount = parseFloat(e.target.value)
-        const newDiscountedPrice = duePayment.subtotal * (selectedDiscount)
-        const newTotalPrice = duePayment.subtotal - newDiscountedPrice 
-        setDiscount(selectedDiscount)
-        setDuePayment({
-            subtotal: duePayment.subtotal,
-            discountedPrice: newDiscountedPrice,
-            total: newTotalPrice
-        })
-    }
-    
+
     return ( 
         <div className="mt-4">
             <hr />
@@ -21,7 +10,7 @@ const CartFooter = ({handleCheckOut, handleClear, discount, setDiscount, duePaym
                 size="sm" 
                 className="mb-3"
                 
-                onChange={handleDiscount}>
+                onChange={(e) => setDiscount(parseFloat(e.target.value))}>
                 <option value="0">Select Voucher</option>
                 <option value=".1">First time buyer discount</option>
                 <option value=".3">Suki discount</option>
