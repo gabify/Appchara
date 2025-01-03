@@ -5,15 +5,16 @@ import POSProductCard from '../component/POSProductCard'
 import CartItem from '../component/CartItem'
 import CartFooter from '../component/CartFooter'
 import useFetch from '../hooks/useFetch'
+import { useSend } from '../hooks/useSend'
 
 const POS = () => {
     const {data, isLoading, error: productError} = useFetch('http://127.0.0.1:5000/api/v1/product/')
+    const {send, isLoading:postLoading, error:postError} = useSend()
     const {products, dispatch} = useProductContext()
     const [cart, setCart] = useState([])
     const [isEmpty, setIsEmpty] = useState(true)
     const [productId, setProductId] = useState(0)
     const [discount, setDiscount] = useState(0)
-    const [error, setError] = useState(null)
     const [show, setShow] = useState(false)
     const [duePayment, setDuePayment] = useState({
         subtotal: 0,
@@ -21,11 +22,33 @@ const POS = () => {
         discountedPrice: 0
     })
 
+    //monitor changes on products
     useEffect(() =>{
         if(data){
             dispatch({type: 'SET_PRODUCTS', payload: data})
         }
     }, [data, dispatch])
+
+    //monitor changes on cart
+    useEffect(() =>{
+        if(cart.length === 0){
+            setIsEmpty(true)
+        }else{
+            setIsEmpty(false)
+        }
+    }, [cart])
+
+    //monitor changes on subtotal, total and discount
+    useEffect(() =>{
+        const newTotal = cart.reduce((sum, item) => sum + item.price, 0);
+        const newDiscountedPrice = newTotal * discount
+        const newTotalPrice = newTotal - newDiscountedPrice 
+        setDuePayment({
+            subtotal: newTotal,
+            discountedPrice: newDiscountedPrice,
+            total: newTotalPrice
+        })
+    }, [cart, discount])
 
     const handleShow = () =>{
         setShow(true)
@@ -47,46 +70,23 @@ const POS = () => {
 
             const newCart = [...cart, cartItem]
             setCart(newCart)
-            setIsEmpty(false)
 
             product.stock -= 1
             dispatch({type: 'UPDATE_PRODUCT', payload: product})
-
-            const newTotal = newCart.reduce((sum, item) => sum + item.price, 0);
-            const newDiscountedPrice = newTotal * discount
-            const newTotalPrice = newTotal - newDiscountedPrice 
-            setDuePayment({
-                subtotal: newTotal,
-                discountedPrice: newDiscountedPrice,
-                total: newTotalPrice
-            })
         }
     }
 
     const removeToCart = (id) =>{
         const newCart = cart.filter((cartItem) => cartItem.id !== id)
         setCart(newCart)
-        let total = duePayment.subtotal
+
         cart.map(cartItem =>{
             if(cartItem.id === id){
-                total -= cartItem.price
-
                 cartItem.product.stock += cartItem.quantity
                 dispatch({type: 'UPDATE_PRODUCT', payload: cartItem.product})
             }
 
             return cartItem
-        })
-        if(cart.length === 0){
-            setIsEmpty(true)
-        }
-
-        const newDiscountedPrice = total * discount
-        const newTotalPrice = total - newDiscountedPrice
-        setDuePayment({
-            subtotal: total,
-            discountedPrice: newDiscountedPrice,
-            total: newTotalPrice <= 0 ? 0: newTotalPrice
         })
     }
 
@@ -109,15 +109,6 @@ const POS = () => {
         })
 
         setCart(newCart)
-
-        const newTotal = newCart.reduce((sum, item) => sum + item.price, 0);
-        const newDiscountedPrice = newTotal * discount
-        const newTotalPrice = newTotal - newDiscountedPrice
-        setDuePayment({
-            subtotal: newTotal,
-            discountedPrice: newDiscountedPrice,
-            total: newTotalPrice
-        }) 
         
     }
 
@@ -134,15 +125,6 @@ const POS = () => {
         })
 
         setCart(newCart)
-
-        const newTotal = newCart.reduce((sum, item) => sum + item.price, 0);
-        const newDiscountedPrice = newTotal * discount
-        const newTotalPrice = newTotal - newDiscountedPrice 
-        setDuePayment({
-            subtotal: newTotal,
-            discountedPrice: newDiscountedPrice,
-            total: newTotalPrice
-        })
     }
 
     const handleCheckOut = async() =>{
@@ -152,20 +134,9 @@ const POS = () => {
             ...rest
         }))
         const sale = {sales, total_sale: duePayment.total}
-        console.log(sale)
-        const response = await fetch('http://127.0.0.1:5000/api/v1/sale/new', {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(sale)
-        })
-        const result = await response.json()
+        const result = await send('http://127.0.0.1:5000/api/v1/sale/new', sale)
 
-        if(!response.ok){
-            setError(result.error)
-            console.log(error)
-        }else{
+        if(result){
             setCart([])
             setDiscount(0)
             setDuePayment({
@@ -208,7 +179,7 @@ const POS = () => {
 
                         {productError && (
                             <div className="text-center">
-                                {error}
+                                {productError}
                             </div>
                         )}
                         {products && (
@@ -242,6 +213,7 @@ const POS = () => {
                             duePayment={duePayment}
                             setDuePayment={setDuePayment}
                             isEmpty={isEmpty}
+                            isLoading={postLoading}
                         />
                     </div>
                 </div>

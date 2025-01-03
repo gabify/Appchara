@@ -1,16 +1,16 @@
 import { useState } from "react";
 import {Modal, Button, Form, Card, InputGroup, Spinner, ProgressBar} from 'react-bootstrap'
 import { useProductContext } from "../hooks/useProductContext";
+import {useSend} from "../hooks/useSend"
 
 const ProductForm = () => {
+    const {send, isLoading, error} = useSend()
     const {dispatch} = useProductContext()
 
     const [name, setName] = useState('');
-    const [isLoading, setIsLoading] = useState(false)
     const [price, setPrice] = useState('');
     const [stock, setStock] = useState('');
     const [description, setDescription] = useState('');
-    const [error, setError] = useState(null)
     const [show, setShow] =useState(false)
 
     const handleShow = () => setShow(true)
@@ -18,26 +18,12 @@ const ProductForm = () => {
 
     const handleSubmit = async(e) =>{
         e.preventDefault()
-        setIsLoading(true)
 
         const product = {name, price, stock, description}
 
-        const response = await fetch('http://127.0.0.1:5000/api/v1/product/new', {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(product)
-        })
-        const result = await response.json()
-
-        if(!response.ok){
-            setError(result.error)
-            setIsLoading(false)
-            console.log(error)
-        }else{
-            setError(null)
-            setIsLoading(false)
+        const result = await send('http://127.0.0.1:5000/api/v1/product/new', product)
+   
+        if(result){
             setName('')
             setPrice('')
             setStock('')
@@ -163,25 +149,31 @@ const ProductForm = () => {
                             </Form.Group>
                         </div>
                         <div className="d-grid gap-2 mx-auto">
-                            {isLoading ? (
-                                <Button type="submit" value="submit" variant="success" disabled>
+                            <Button 
+                                type="submit" 
+                                value="submit" 
+                                variant="success" 
+                                disabled={isLoading}
+                            >
+                                {isLoading ? (
                                     <Spinner
                                         as="span"
                                         animation="border"
                                         size="sm"
                                         role="status"
                                         aria-hidden="true"
-                                        />
-                                </Button>) :(
-                                <Button type="submit" value="submit" variant="success">
-                                    Confirm
-                                </Button>
-                            )}
-                            <Button variant="outline-secondary" onClick={handleClose}>
+                                    />
+                                ) : 'Confirm'}
+                            </Button>
+                            
+                            <Button variant="outline-secondary" onClick={handleClose} disabled={isLoading}>
                                 Cancel
                             </Button>
                         </div>
                     </Form>
+                    {error && (
+                        <div>{error}</div>
+                    )}
                 </Modal.Body>
             </Modal>
         </div>

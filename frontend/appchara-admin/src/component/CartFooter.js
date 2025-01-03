@@ -1,6 +1,6 @@
-import { Button, Form } from "react-bootstrap";
+import { Button, Form, Spinner } from "react-bootstrap";
 
-const CartFooter = ({handleCheckOut, handleClear, discount, setDiscount, duePayment, setDuePayment, isEmpty}) => {
+const CartFooter = ({handleCheckOut, handleClear, discount, setDiscount, duePayment, setDuePayment, isEmpty, isLoading}) => {
     const handleDiscount = (e) =>{
         const selectedDiscount = parseFloat(e.target.value)
         const newDiscountedPrice = duePayment.subtotal * (selectedDiscount)
@@ -39,16 +39,31 @@ const CartFooter = ({handleCheckOut, handleClear, discount, setDiscount, duePaym
                 <small>Total:</small>
                 <small className="fw-bold fs-6">₱ {duePayment.total.toFixed(2)}</small>
             </div>
-            {isEmpty ? (
-                <div className="d-grid">
-                    <Button disabled variant="success" className="mb-2">Checkout</Button>
-                    <Button disabled variant="danger">Clear</Button>
-                </div>):(
-                <div className="d-grid">
-                    <Button variant="success" className="mb-2" onClick={handleCheckOut}>Checkout</Button>
-                    <Button variant="danger" onClick={handleClear}>Clear</Button>
-                </div>
-            )}
+            <div className="d-grid">
+                <Button 
+                    variant="success" 
+                    className="mb-2" 
+                    disabled={isEmpty || isLoading}
+                    onClick={handleCheckOut}
+                >
+                    {isLoading ? (
+                        <Spinner
+                            as="span"
+                            animation="border"
+                            size="sm"
+                            role="status"
+                            aria-hidden="true"
+                        />
+                    ) : 'Checkout'}
+                </Button>
+                <Button 
+                    variant="danger"
+                    disabled={isEmpty || isLoading}
+                    onClick={handleClear}
+                >
+                    Clear
+                </Button>
+            </div>
         </div>
      );
 }
