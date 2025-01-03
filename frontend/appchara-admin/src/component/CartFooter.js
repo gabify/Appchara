@@ -1,6 +1,6 @@
 import { Button, Form, Spinner } from "react-bootstrap";
 
-const CartFooter = ({handleCheckOut, handleClear, discount, setDiscount, duePayment, setDuePayment, isEmpty, isLoading}) => {
+const CartFooter = ({handleCheckOut, handleClear, discount, setDiscount, duePayment, isEmpty, isLoading}) => {
 
     return ( 
         <div className="mt-4">
