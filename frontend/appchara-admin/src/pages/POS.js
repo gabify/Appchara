@@ -38,7 +38,7 @@ const POS = () => {
         }
     }, [cart])
 
-    //monitor changes on subtotal, total and discount
+    //monitor changes on subtotal, total and discounted price
     useEffect(() =>{
         const newTotal = cart.reduce((sum, item) => sum + item.price, 0);
         const newDiscountedPrice = newTotal * discount
@@ -56,6 +56,18 @@ const POS = () => {
 
     const handleClose = () =>{
         setShow(false)
+    }
+
+    //reset cart, subtotal, total and discount
+    const reset = () =>{
+        setCart([])
+        setDiscount(0)
+        setDuePayment({
+            subtotal: 0,
+            discountedPrice: 0,
+            total: 0
+        })
+        setIsEmpty(true)
     }
     
 
@@ -137,16 +149,8 @@ const POS = () => {
         const result = await send('http://127.0.0.1:5000/api/v1/sale/new', sale)
 
         if(result){
-            setCart([])
-            setDiscount(0)
-            setDuePayment({
-                subtotal: 0,
-                discountedPrice: 0,
-                total: 0
-            })
-            handleShow()
-            setIsEmpty(true)
-            //Add alert that the transaction is complete
+            reset()
+            handleShow() //Will need to update this one
         }
     }
 
@@ -157,15 +161,9 @@ const POS = () => {
 
             return cartItem
         })
-        setCart([])
-        setDuePayment({
-            subtotal: 0,
-            discountedPrice: 0,
-            total: 0
-        })
-        setDiscount(0)
-        setIsEmpty(true)
+        reset()
     }
+
     return ( 
         <div className="sale">
             <div className="px-3">
@@ -217,6 +215,10 @@ const POS = () => {
                         />
                     </div>
                 </div>
+
+                {postError && (
+                    <div>{postError}</div>
+                )}
 
                 <ToastContainer className='p-3' position='bottom-end' style={{zIndex: 1}}>
                     <Toast show={show} onClose={handleClose} delay={3000} autohide>

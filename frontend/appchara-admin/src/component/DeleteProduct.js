@@ -1,17 +1,20 @@
 import { useState } from 'react'
 import {Modal, Button} from 'react-bootstrap'
 import { useProductContext } from '../hooks/useProductContext'
+import { useAuthContext } from '../hooks/useAuthContext'
 
 const DeleteProduct = ({productId, showDelete, handleCloseDelete}) => {
     const id = productId
     const {dispatch} = useProductContext()
     const [error, setError] = useState(null)
+    const {user} = useAuthContext()
 
     const handleDelete = async() =>{
         const response = await fetch(`http://127.0.0.1:5000/api/v1/product/${id}`, {
             method: "DELETE",
             headers: {
-                "Content-type": "application/json"
+                "Content-type": "application/json",
+                "Authorization" : `Bearer ${user.token}`
             },
         })
 

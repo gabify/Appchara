@@ -8,7 +8,7 @@ const StockReport = ({chartData, stockDashboard}) => {
     const options = {
         plugins: {
             title: {
-                display: false,
+                display: true,
             },
             legend: {
                 display: false
@@ -30,7 +30,7 @@ const StockReport = ({chartData, stockDashboard}) => {
                 </div>
             )}
             {stockDashboard.data && (
-                <Row>
+                <Row className="mb-3">
                     <DashboardCard 
                         icon={<i className="bi bi-box2 fs-1"></i>}
                         content={stockDashboard.data.currentStock}
@@ -53,6 +53,8 @@ const StockReport = ({chartData, stockDashboard}) => {
                     />
                 </Row>
             )}
+            <p className="h5 mb-0">How is our Atchara's stock?</p>
+            <p className="fw-light mb-1">Current available stocks as of today</p>
             <Row className="mt-3">
                 {chartData.isLoading && (
                     <Spinner variant='success' animation="border" role="status">
@@ -66,7 +68,7 @@ const StockReport = ({chartData, stockDashboard}) => {
                 )}
                 {chartData.data && (
                     <DataViz
-                        title={"Currently Available Stocks"}
+                        title={"Current Available Stocks"}
                         chartData={chartData.data}
                         chartType={"bar"}
                         options={options}

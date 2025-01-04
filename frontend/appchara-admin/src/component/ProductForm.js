@@ -88,7 +88,8 @@ const ProductForm = () => {
                             <Form.Label className="fw-semibold mb-0" style={{fontSize:'0.94rem'}}>Description</Form.Label>
                             <Form.Control 
                                 as="textarea"
-                                rows={3} 
+                                rows={3}
+                                maxLength='100' 
                                 onChange={(e) => setDescription(e.target.value)} 
                                 value={description}
                                 placeholder="Provide some information about the product..."
